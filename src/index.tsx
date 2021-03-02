@@ -3,20 +3,11 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-import FilterTableContext from './context/useFilterTable';
-import PaginationContext from './context/usePagination';
-import PlanetsContext from './context/usePlanets';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 ReactDOM.render(
   <React.StrictMode>
-    <FilterTableContext>
-      <PaginationContext>
-        <PlanetsContext>
-          <App />
-        </PlanetsContext>
-      </PaginationContext>
-    </FilterTableContext>
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );
