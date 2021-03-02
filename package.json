@@ -57,6 +57,7 @@
     ]
   },
   "devDependencies": {
-    "@types/styled-components": "^5.1.7"
+    "@types/styled-components": "^5.1.7",
+    "eslint-plugin-react": "^7.22.0"
   }
 }

@@ -1,5 +1,4 @@
-import React, { useState, ReactNode, ReactElement, useMemo } from "react";
-import ComparisonEnum from "../../../models/enum/Comparison.enum";
+import React, { ReactNode } from "react";
 
 import { NumericPlanetValues } from "../../../models/Planet";
 import FilterForm from "../../forms/FilterForm";

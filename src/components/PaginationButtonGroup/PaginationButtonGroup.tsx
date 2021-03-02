@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 
 import { Pagination } from "../../context/usePagination";
 
@@ -32,7 +32,7 @@ const PaginationButtonGroup = ({
 
   const handlePaginationChange = useCallback(
     (index: number) => () => onPaginationChange?.(index),
-    []
+    [onPaginationChange]
   );
 
   return (

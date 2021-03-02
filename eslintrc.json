@@ -1,6 +1,7 @@
 {
     "eslintConfig": {
         "extends": [
+            "plugin:react/recommended",
             "react-app",
             "shared-config"
         ],
@@ -13,7 +14,8 @@
                     "**/*.ts?(x)"
                 ],
                 "rules": {
-                    "additional-typescript-only-rule": "warn"
+                    "additional-typescript-only-rule": "warn",
+                    "react/jsx-uses-react": 1
                 }
             }
         ]

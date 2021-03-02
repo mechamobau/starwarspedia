@@ -13,7 +13,7 @@ function Table<T>({ data, columnLabels }: Props<T>) {
     if (!data.length) return [];
 
     return Object.keys(data[0]);
-  }, []);
+  }, [data]);
 
   return (
     <BSTable className="table-dark" responsive>

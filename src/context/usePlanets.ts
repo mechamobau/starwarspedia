@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ServerResponse from "../models/ServerResponse";
 import constate from "constate";
 import { usePagination } from "./usePagination";
@@ -140,12 +140,14 @@ const [PlanetsProvider, usePlanets] = constate(() => {
       .then(filterByNumericValues)
       .then(setFilteredPlanets)
       .catch(clearFilteredItems);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pagination]);
 
   useEffect(() => {
     if (planets)
       pipe(filterByName, filterByNumericValues, setFilteredPlanets)(planets);
-  }, [filter, filterByName, filterByNumericValues]);
+  }, [planets, filter, filterByName, filterByNumericValues]);
 
   return { planets: filteredPlanets, count };
 });

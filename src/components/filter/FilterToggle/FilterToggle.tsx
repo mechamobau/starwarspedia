@@ -1,15 +1,15 @@
 import React, { ReactNode } from "react";
+import { Button } from "react-bootstrap";
 
 type Props = {
   children: ReactNode[] | ReactNode;
   className: string;
-  onClick: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+  onClick: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 };
 
-const FilterToggle = React.forwardRef<HTMLAnchorElement, Props>(
+const FilterToggle = React.forwardRef<HTMLButtonElement, Props>(
   ({ children, onClick, className }, ref) => (
-    <a
-      href=""
+    <Button
       className={className}
       ref={ref}
       onClick={(e) => {
@@ -18,7 +18,7 @@ const FilterToggle = React.forwardRef<HTMLAnchorElement, Props>(
       }}
     >
       {children}
-    </a>
+    </Button>
   )
 );
 
