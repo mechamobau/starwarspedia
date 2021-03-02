@@ -17,6 +17,10 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "noImplicitAny": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "importsNotUsedAsValues": "preserve",
     "noEmit": true,
     "jsx": "react-jsx"
   },
