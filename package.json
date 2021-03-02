@@ -55,5 +55,8 @@
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
       "prettier --write"
     ]
+  },
+  "devDependencies": {
+    "@types/styled-components": "^5.1.7"
   }
 }
