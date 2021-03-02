@@ -7,43 +7,49 @@ import { server } from "../services/axios";
 import { useFilterTable } from "./useFilterTable";
 import ComparisonEnum from "../models/enum/Comparison.enum";
 import { AxiosResponse } from "axios";
+import pipe from "@bitty/pipe";
 
-import response from './response.json'
+import safeParseNumber from "../utils/safeParseNumber";
 
-type _Planet = {
-    name: string,
-    rotation_period: string,
-    orbital_period: string,
-    diameter: string,
-    climate: string,
-    gravity: string,
-    terrain: string,
-    surface_water: string,
-    population: string,
-    residents: string[],
-    films: string[],
-    created: string,
-    edited: string,
-    url: string
-}
+type RawPlanetResponse = {
+  name: string;
+  rotation_period: string;
+  orbital_period: string;
+  diameter: string;
+  climate: string;
+  gravity: string;
+  terrain: string;
+  surface_water: string;
+  population: string;
+  residents: string[];
+  films: string[];
+  created: string;
+  edited: string;
+  url: string;
+};
 
-const serverGet: Promise<ServerResponse<_Planet[]>> = new Promise((resolve) => {
-    resolve({...response})
-})  
-
-const mapPlanetsResponse = ({data: {results, ...items}}: AxiosResponse<ServerResponse<_Planet[]>>) : ServerResponse<Planet[]>=> {
-    return {
-        results: results.map((item) => ({
-            ...item,
-            rotation_period: Number(item.rotation_period),
-            orbital_period: Number(item.orbital_period),
-            surface_water: Number(item.surface_water),
-            population: Number(item.population),
-            diameter: Number(item.diameter),
-        })),
-        ...items
-    }
-}
+const mapPlanetsResponse = ({
+  data: { results, ...items },
+}: AxiosResponse<ServerResponse<RawPlanetResponse[]>>): ServerResponse<Planet[]> => ({
+  results: results.map(
+    ({
+      rotation_period,
+      orbital_period,
+      surface_water,
+      population,
+      diameter,
+      ...item
+    }) => ({
+      ...item,
+      rotation_period: safeParseNumber(rotation_period),
+      orbital_period: safeParseNumber(orbital_period),
+      surface_water: safeParseNumber(surface_water),
+      population: safeParseNumber(population),
+      diameter: safeParseNumber(diameter),
+    })
+  ),
+  ...items,
+});
 
 /**
  * Hook e Context Provider responsáveis por prover os dados retornados
@@ -53,14 +59,25 @@ const [PlanetsProvider, usePlanets] = constate(() => {
   const { pagination } = usePagination();
   const { filter } = useFilterTable();
 
-  const [filteredItems, setFilteredItems] = useState<Planet[] | null>(null);
+  const [filteredPlanets, setFilteredPlanets] = useState<Planet[] | null>(null);
+
+  const [planets, setPlanets] = useState<Planet[] | null>(null);
+
+  const [count, setCount] = useState(0);
+
+  const setCountItemsNumber = useCallback((items: ServerResponse<Planet[]>) => {
+    setCount(items.count);
+
+    setPlanets(items.results);
+
+    return items.results;
+  }, []);
 
   const filterByName = useCallback(
-      ({ results: items }: ServerResponse<Planet[]>) => {
-    // ( { results: items }: ServerResponse<Planet[]>) => {
+    (items: Planet[]) => {
       if (filter.byName) {
         const filtered = items.filter(({ name }) =>
-          name.match(new RegExp(`${filter.byName}`, "i"))
+          name.match(new RegExp(`${filter.byName.name}`, "i"))
         );
 
         return filtered;
@@ -73,8 +90,7 @@ const [PlanetsProvider, usePlanets] = constate(() => {
 
   const filterByNumericValues = useCallback(
     (items: Planet[]) => {
-
-      if (filter.byNumericValues.length > 0) {
+      if (filter.byNumericValues.length) {
         let appliedFilters: Planet[] = [];
 
         filter.byNumericValues.forEach(({ column, comparison, value }) => {
@@ -89,47 +105,47 @@ const [PlanetsProvider, usePlanets] = constate(() => {
               (item) => item ?? item[column] < value
             ),
           }[comparison];
-          
+
           if (!appliedFilter) {
             throw new Error(
               "Provided value does not exists in `ComparisonEnum`"
             );
           }
 
-          appliedFilters = appliedFilter
+          appliedFilters = appliedFilter;
         });
 
         return appliedFilters;
       }
 
-      return items
+      return items;
     },
     [filter]
   );
 
-  const clearFilteredItems = () => () => setFilteredItems(null);
+  const clearFilteredItems = () => () => setFilteredPlanets(null);
 
   useEffect(() => {
     const params = pagination.current > 0 ? { page: pagination.current } : null;
 
-    // serverGet
     server
-      .get<ServerResponse<_Planet[]>>("/planets", {
+      .get<ServerResponse<RawPlanetResponse[]>>("/planets", {
         params,
       })
       .then(mapPlanetsResponse)
+      .then(setCountItemsNumber)
       .then(filterByName)
       .then(filterByNumericValues)
-      .then((items) => {
-        console.log({finally: items})
-        setFilteredItems(items);
-        return items;
-      })
+      .then(setFilteredPlanets)
       .catch(clearFilteredItems);
-  }, [pagination, filterByName, filterByNumericValues]);
+  }, [pagination]);
 
+  useEffect(() => {
+    if (planets)
+      pipe(filterByName, filterByNumericValues, setFilteredPlanets)(planets);
+  }, [filter, filterByName, filterByNumericValues]);
 
-  return { filteredItems };
+  return { planets: filteredPlanets, count };
 });
 
 export { usePlanets };
