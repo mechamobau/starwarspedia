@@ -6,7 +6,7 @@ import constate from 'constate';
  */
 export const LIMIT_PER_VIEW_PAGINATION = 10;
 
-type Pagination = {
+export type Pagination = {
     current: number,
     previous: number | null,
     next: number | null,
@@ -17,6 +17,7 @@ type Pagination = {
 enum ActionTypeEnum {
     FORWARD_PAGINATION = 'FOWARD_PAGINATION',
     BACKWARD_PAGINATION = 'BACKWARD_PAGINATION',
+    SET_CURRENT_ITEM = 'SET_CURRENT_ITEM',
     SET_COUNT_ITEMS = 'SET_COUNT_ITEMS'
 }
 
@@ -25,12 +26,15 @@ type Action = {
 } | {
     type: ActionTypeEnum.FORWARD_PAGINATION
 } | {
+    type: ActionTypeEnum.SET_CURRENT_ITEM,
+    value: number
+} | {
     type: ActionTypeEnum.SET_COUNT_ITEMS,
     value: number
 }
 
 const initialState: Pagination = {
-    current: 0,
+    current: 1,
     previous: null,
     next: null,
 }
@@ -40,7 +44,7 @@ const reducer = (state: Pagination, action: Action): Pagination => {
         case ActionTypeEnum.BACKWARD_PAGINATION: {
             const current = state.current - 1
 
-            const previous = current  === 0 ? null : current - 1;
+            const previous = current <= 1 ? null : current - 1;
 
             const next = current + 1;
 
@@ -56,7 +60,7 @@ const reducer = (state: Pagination, action: Action): Pagination => {
         case ActionTypeEnum.FORWARD_PAGINATION: {
             const current = state.current + 1
 
-            const next = current  === state.viewsCount || !state.viewsCount ? null : current + 1;
+            const next = (current === state.viewsCount) || !state.viewsCount ? null : current + 1;
 
             const previous = current - 1;
 
@@ -72,7 +76,7 @@ const reducer = (state: Pagination, action: Action): Pagination => {
 
             const next = state.current < viewsCount ? state.current + 1 : state.next;
 
-            const previous = state.current > 0 ? state.current - 1 : state.previous;
+            const previous = state.current > 1 ? state.current - 1 : state.previous;
 
             return {
                 ...state,
@@ -81,6 +85,23 @@ const reducer = (state: Pagination, action: Action): Pagination => {
                 previous,
                 next
             };
+        }
+
+        case ActionTypeEnum.SET_CURRENT_ITEM: {
+            const current = action.value;
+            
+            const next = (current === state.viewsCount) || !state.viewsCount ? null : current + 1;
+            
+            const previous = current <= 1 ? null : current - 1;
+
+            console.log({current_item: { previous, current, next }})
+
+            return {
+                ...state,
+                current,
+                next,
+                previous
+            }
         }
 
         default:
@@ -101,7 +122,9 @@ const [PaginationProvider, usePagination] = constate(() => {
 
     const setCountItems = useCallback((countItems: number) => dispatch({ type: ActionTypeEnum.SET_COUNT_ITEMS, value: countItems }), [])
 
-    return { pagination: state, next, previous, setCountItems }
+    const setCurrentItem = useCallback((value: number) => dispatch({ type: ActionTypeEnum.SET_CURRENT_ITEM, value }), [])
+
+    return { pagination: state, next, previous, setCountItems, setCurrentItem }
     
 });
 
