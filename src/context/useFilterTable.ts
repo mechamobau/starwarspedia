@@ -71,7 +71,7 @@ const reducer = (state: FilterList, action: Action): FilterList => {
 };
 
 /**
- * Hook e Context Provider dos filtros utilizados nos dados do componente de `<Table />`. 
+ * Hook e Context Provider dos filtros utilizados nos dados do componente de `<Table />`.
  */
 const [FilterTableProvider, useFilterTable] = constate(() => {
   const [state, dispatch] = useReducer(reducer, initialValue);

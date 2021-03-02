@@ -30,7 +30,9 @@ type RawPlanetResponse = {
 
 const mapPlanetsResponse = ({
   data: { results, ...items },
-}: AxiosResponse<ServerResponse<RawPlanetResponse[]>>): ServerResponse<Planet[]> => ({
+}: AxiosResponse<ServerResponse<RawPlanetResponse[]>>): ServerResponse<
+  Planet[]
+> => ({
   results: results.map(
     ({
       rotation_period,

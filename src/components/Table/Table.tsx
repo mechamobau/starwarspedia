@@ -16,23 +16,27 @@ function Table<T>({ data, columnLabels }: Props<T>) {
   }, []);
 
   return (
-    <BSTable responsive>
+    <BSTable className="table-dark" responsive>
       <thead data-testid="table-header">
         <tr data-testid="table-header-row">
           {columns.map((column, index) => (
-            <th key={index+Math.random()}>{columnLabels?.[column] ?? column}</th>
+            <th key={index + Math.random()}>
+              {columnLabels?.[column] ?? column}
+            </th>
           ))}
         </tr>
       </thead>
       <tbody>
         {data.length
-          ? data.map((item, index) => {
+          ? data.map((item) => {
               const keys = Object.keys(item);
 
               return (
-                <tr key={new Date().getTime()+Math.random()}>
+                <tr key={new Date().getTime() + Math.random()}>
                   {keys.map((key) => (
-                    <td key={new Date().getTime()+Math.random()}>{(item as any)[key]}</td>
+                    <td key={new Date().getTime() + Math.random()}>
+                      {(item as any)[key]}
+                    </td>
                   ))}
                 </tr>
               );

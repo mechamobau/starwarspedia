@@ -5,9 +5,9 @@ import Planet from "../models/Planet";
  * Tipo dos valores de filtro para dados numéricos
  */
 export type NumericValueFilter = {
-    column: keyof Planet;
-    comparison: ComparisonEnum;
-    value: number;
+  column: keyof Planet;
+  comparison: ComparisonEnum;
+  value: number;
 };
 
 /**
