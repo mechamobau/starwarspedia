@@ -93,18 +93,18 @@ const [PlanetsProvider, usePlanets] = constate(() => {
   const filterByNumericValues = useCallback(
     (items: Planet[]) => {
       if (filter.byNumericValues.length) {
-        let appliedFilters: Planet[] = [];
+        let appliedFilters: Planet[] = items;
 
         filter.byNumericValues.forEach(({ column, comparison, value }) => {
           const appliedFilter = {
-            [ComparisonEnum.EQUALS]: items.filter(
-              (item) => item ?? item[column] === value
+            [ComparisonEnum.EQUALS]: appliedFilters.filter(
+              (item) => item[column] === value
             ),
-            [ComparisonEnum.GREATER_THAN]: items.filter(
-              (item) => item ?? item[column] > value
+            [ComparisonEnum.GREATER_THAN]: appliedFilters.filter(
+              (item) => (item[column] ?? 0) > value
             ),
-            [ComparisonEnum.LOWER_THAN]: items.filter(
-              (item) => item ?? item[column] < value
+            [ComparisonEnum.LOWER_THAN]: appliedFilters.filter(
+              (item) => (item[column] ?? 0) < value
             ),
           }[comparison];
 
@@ -116,6 +116,8 @@ const [PlanetsProvider, usePlanets] = constate(() => {
 
           appliedFilters = appliedFilter;
         });
+
+        console.log({ appliedFilters });
 
         return appliedFilters;
       }
