@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect } from "react";
-import Table from "./components/Table/Table";
+import Table from "./components/table/Table/Table";
 
 import { usePlanets } from "./context/usePlanets";
 
 import FormControl from "react-bootstrap/FormControl";
 import { useFilter } from "./context/useFilter";
-import PaginationButtonGroup from "./components/PaginationButtonGroup/PaginationButtonGroup";
+import PaginationButtonGroup from "./components/table/PaginationButtonGroup/PaginationButtonGroup";
 import { usePagination } from "./context/usePagination";
-import PublicLayout from "./components/PublicLayout/PublicLayout";
+import PublicLayout from "./components/global/PublicLayout/PublicLayout";
 import styled, { createGlobalStyle } from "styled-components";
 import { Button, Dropdown } from "react-bootstrap";
-import FilterToggle from "./components/filter/FilterToggle/FilterToggle";
-import FilterDropdown from "./components/filter/FilterDropdown/FilterDropdown";
+import FilterToggle from "./components/dropdown/DropdownToggle/FilterToggle";
+import FilterDropdown from "./components/dropdown/FilterDropdown/FilterDropdown";
 import pipe from "@bitty/pipe";
 import withProvider from "./utils/react/withProvider";
 
@@ -21,7 +21,7 @@ import PlanetsContext from "./context/usePlanets";
 import columnLabels from "./constants/columnsLabels";
 import operationsLabels from "./constants/operationsLabels";
 import SortContext, { useSort } from "./context/useSort";
-import SortDropdown from "./components/sort/SortDropdown/SortDropdown";
+import SortDropdown from "./components/dropdown/SortDropdown/SortDropdown";
 
 const APP_BACKGROUND_IMAGE = process.env.PUBLIC_URL + "/assets/background.jpg";
 
