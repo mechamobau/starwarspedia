@@ -8,7 +8,7 @@ import { useFilter } from "./useFilter";
 import ComparisonEnum from "../models/enum/Comparison.enum";
 import pipe from "@bitty/pipe";
 import type RawPlanet from "../models/RawPlanet";
-import mapPlanetsResponse from "../utils/mapRawPlanetsResponse";
+import mapRawPlanetsResponse from "../utils/mapRawPlanetsResponse";
 import { useSort } from "./useSort";
 import OrderEnum from "../models/enum/Order.enum";
 
@@ -120,7 +120,7 @@ const [PlanetsProvider, usePlanets] = constate(() => {
       .get<ServerResponse<RawPlanet[]>>("/planets/", {
         params,
       })
-      .then(mapPlanetsResponse)
+      .then(mapRawPlanetsResponse)
       .then(setCountItemsNumber)
       .then(filterByName)
       .then(filterByNumericValues)
