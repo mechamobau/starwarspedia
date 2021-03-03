@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect } from "react";
 import Table from "./components/Table/Table";
 
 import { usePlanets } from "./context/usePlanets";
@@ -18,6 +18,10 @@ import withProvider from "./utils/react/withProvider";
 import FilterTableContext from "./context/useFilterTable";
 import PaginationContext from "./context/usePagination";
 import PlanetsContext from "./context/usePlanets";
+import columnLabels from "./constants/columnsLabels";
+import operationsLabels from "./constants/operationsLabels";
+
+const APP_BACKGROUND_IMAGE = process.env.PUBLIC_URL + "/assets/background.jpg";
 
 const GlobalStyle = createGlobalStyle`
   html, body {
@@ -28,9 +32,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     padding: 10px;
-    background: url(${
-      process.env.PUBLIC_URL + "/assets/background.jpg"
-    }) center / cover no-repeat;
+    background: url(${APP_BACKGROUND_IMAGE}) center / cover no-repeat;
   }
 `;
 
@@ -82,25 +84,6 @@ function App() {
     [setFilterByName]
   );
 
-  const columnLabels = useMemo(
-    () => ({
-      name: "Nome",
-      rotation_period: "Rotação",
-      orbital_period: "Translação",
-      diameter: "Diâmetro",
-      climate: "Clima",
-      gravity: "Gravidade",
-      terrain: "Terreno",
-      surface_water: "Superfície da Água",
-      population: "População",
-      films: "Filmes",
-      created: "Data de Criação",
-      edited: "Data de Edição",
-      url: "URL",
-    }),
-    []
-  );
-
   return (
     <>
       <GlobalStyle />
@@ -138,7 +121,11 @@ function App() {
             >
               {filter.byNumericValues?.length ? (
                 filter.byNumericValues?.map((item) => (
-                  <Dropdown.ItemText>{item.column}</Dropdown.ItemText>
+                  <Dropdown.ItemText>{`${
+                    columnLabels[item.column]
+                  } ${operationsLabels[item.comparison].toLowerCase()} ${
+                    item.value
+                  }`}</Dropdown.ItemText>
                 ))
               ) : (
                 <Dropdown.ItemText>Nenhum filtro cadastrado</Dropdown.ItemText>
