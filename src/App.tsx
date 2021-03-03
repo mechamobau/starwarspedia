@@ -4,7 +4,7 @@ import Table from "./components/Table/Table";
 import { usePlanets } from "./context/usePlanets";
 
 import FormControl from "react-bootstrap/FormControl";
-import { useFilterTable } from "./context/useFilterTable";
+import { useFilter } from "./context/useFilter";
 import PaginationButtonGroup from "./components/PaginationButtonGroup/PaginationButtonGroup";
 import { usePagination } from "./context/usePagination";
 import PublicLayout from "./components/PublicLayout/PublicLayout";
@@ -15,7 +15,7 @@ import FilterDropdown from "./components/filter/FilterDropdown/FilterDropdown";
 import pipe from "@bitty/pipe";
 import withProvider from "./utils/react/withProvider";
 
-import FilterTableContext from "./context/useFilterTable";
+import FilterContext from "./context/useFilter";
 import PaginationContext from "./context/usePagination";
 import PlanetsContext from "./context/usePlanets";
 import columnLabels from "./constants/columnsLabels";
@@ -85,13 +85,13 @@ function App() {
     setCurrentItem,
   } = usePagination();
 
-  const { removeFilterByNumericValues } = useFilterTable();
+  const { removeFilterByNumericValues } = useFilter();
 
   useEffect(() => {
     setCountItems(count);
   }, [count, setCountItems]);
 
-  const { filter, setFilterByName } = useFilterTable();
+  const { filter, setFilterByName } = useFilter();
 
   const handleFilterByNameChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -188,7 +188,7 @@ function App() {
 const enhance = pipe(
   withProvider(PlanetsContext),
   withProvider(PaginationContext),
-  withProvider(FilterTableContext)
+  withProvider(FilterContext)
 );
 
 export default enhance(App);

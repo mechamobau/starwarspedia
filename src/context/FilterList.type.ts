@@ -11,7 +11,7 @@ export type NumericValueFilter = {
 };
 
 /**
- * Tipo definidor dos filtros utilizados nos dados do hook `useFilterTable`
+ * Tipo definidor dos filtros utilizados nos dados do hook `useFilter`
  */
 export type FilterList = {
   filters: {

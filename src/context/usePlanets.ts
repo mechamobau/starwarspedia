@@ -4,7 +4,7 @@ import constate from "constate";
 import { usePagination } from "./usePagination";
 import Planet from "../models/Planet";
 import { server } from "../services/axios";
-import { useFilterTable } from "./useFilterTable";
+import { useFilter } from "./useFilter";
 import ComparisonEnum from "../models/enum/Comparison.enum";
 import { AxiosResponse } from "axios";
 import pipe from "@bitty/pipe";
@@ -59,7 +59,7 @@ const mapPlanetsResponse = ({
  */
 const [PlanetsProvider, usePlanets] = constate(() => {
   const { pagination } = usePagination();
-  const { filter } = useFilterTable();
+  const { filter } = useFilter();
 
   const [filteredPlanets, setFilteredPlanets] = useState<Planet[] | null>(null);
 
@@ -133,7 +133,7 @@ const [PlanetsProvider, usePlanets] = constate(() => {
     const params = pagination.current > 0 ? { page: pagination.current } : null;
 
     server
-      .get<ServerResponse<RawPlanetResponse[]>>("/planets", {
+      .get<ServerResponse<RawPlanetResponse[]>>("/planets/", {
         params,
       })
       .then(mapPlanetsResponse)

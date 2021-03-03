@@ -1,5 +1,5 @@
 import React, { ReactNode, useMemo } from "react";
-import { useFilterTable } from "../../../context/useFilterTable";
+import { useFilter } from "../../../context/useFilter";
 
 import { NumericPlanetValues } from "../../../models/Planet";
 import FilterForm from "../../forms/FilterForm";
@@ -15,7 +15,7 @@ type Props = {
 
 const FilterDropdown = React.forwardRef<HTMLDivElement, Props>(
   ({ children, className, labeledBy, columnLabels }, ref) => {
-    const { filter, setFilterByNumericValues } = useFilterTable();
+    const { filter, setFilterByNumericValues } = useFilter();
 
     const formColumnLabels = useMemo(() => {
       const columnLabelsArray = Object.entries(columnLabels);
