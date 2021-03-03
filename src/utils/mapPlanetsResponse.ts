@@ -1,10 +1,10 @@
 import { AxiosResponse } from "axios";
-import RawPlanet from "../models/RawPlanet";
+import type RawPlanet from "../models/RawPlanet";
 import safeParseNumber from "./safeParseNumber";
 import type Planet from "../models/Planet";
 import type ServerResponse from "../models/ServerResponse";
 
-const mapPlanetsResponse = ({
+const mapRawPlanetsResponse = ({
   data: { results, ...items },
 }: AxiosResponse<ServerResponse<RawPlanet[]>>): ServerResponse<Planet[]> => ({
   results: results.map(
@@ -27,4 +27,4 @@ const mapPlanetsResponse = ({
   ...items,
 });
 
-export default mapPlanetsResponse;
+export default mapRawPlanetsResponse;

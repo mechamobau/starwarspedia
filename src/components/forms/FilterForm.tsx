@@ -3,7 +3,7 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl";
 
-import { NumericPlanetValues } from "../../models/Planet";
+import type { NumericPlanetValues } from "../../models/Planet";
 
 import ComparisonEnum from "../../models/enum/Comparison.enum";
 

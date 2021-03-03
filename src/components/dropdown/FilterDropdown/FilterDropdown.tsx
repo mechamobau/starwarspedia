@@ -1,7 +1,7 @@
 import React, { ReactNode, useMemo } from "react";
 import { useFilter } from "../../../context/useFilter";
 
-import { NumericPlanetValues } from "../../../models/Planet";
+import type { NumericPlanetValues } from "../../../models/Planet";
 import FilterForm from "../../forms/FilterForm";
 
 type Props = {

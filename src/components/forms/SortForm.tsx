@@ -3,7 +3,7 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl";
 
-import Planet from "../../models/Planet";
+import type Planet from "../../models/Planet";
 
 import OrderEnum from "../../models/enum/Order.enum";
 

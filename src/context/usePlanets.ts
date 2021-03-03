@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
-import ServerResponse from "../models/ServerResponse";
+import type ServerResponse from "../models/ServerResponse";
 import constate from "constate";
 import { usePagination } from "./usePagination";
-import Planet from "../models/Planet";
+import type Planet from "../models/Planet";
 import { server } from "../services/axios";
 import { useFilter } from "./useFilter";
 import ComparisonEnum from "../models/enum/Comparison.enum";
 import pipe from "@bitty/pipe";
-import RawPlanet from "../models/RawPlanet";
-import mapPlanetsResponse from "../utils/mapPlanetsResponse";
+import type RawPlanet from "../models/RawPlanet";
+import mapPlanetsResponse from "../utils/mapRawPlanetsResponse";
 import { useSort } from "./useSort";
 import OrderEnum from "../models/enum/Order.enum";
 

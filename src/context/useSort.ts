@@ -1,7 +1,7 @@
 import { useState } from "react";
 import constate from "constate";
 import OrderEnum from "../models/enum/Order.enum";
-import Planet from "../models/Planet";
+import type Planet from "../models/Planet";
 
 /**
  * Tipo que define a coluna a ser ordena e em qual ordem.

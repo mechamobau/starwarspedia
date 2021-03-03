@@ -1,5 +1,5 @@
 import ComparisonEnum from "../models/enum/Comparison.enum";
-import Planet from "../models/Planet";
+import type Planet from "../models/Planet";
 
 /**
  * Tipo dos valores de filtro para dados numéricos
