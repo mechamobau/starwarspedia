@@ -19,8 +19,8 @@ function Table<T>({ data, columnLabels }: Props<T>) {
     <BSTable className="table-dark" responsive>
       <thead data-testid="table-header">
         <tr data-testid="table-header-row">
-          {columns.map((column, index) => (
-            <th key={index + Math.random()}>
+          {columns.map((column) => (
+            <th key={column + Math.random()}>
               {columnLabels?.[column] ?? column}
             </th>
           ))}
@@ -34,9 +34,7 @@ function Table<T>({ data, columnLabels }: Props<T>) {
               return (
                 <tr key={new Date().getTime() + Math.random()}>
                   {keys.map((key) => (
-                    <td key={new Date().getTime() + Math.random()}>
-                      {(item as any)[key]}
-                    </td>
+                    <td key={key + Math.random()}>{(item as any)[key]}</td>
                   ))}
                 </tr>
               );
