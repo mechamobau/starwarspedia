@@ -39,7 +39,7 @@ const FilterDropdown = React.forwardRef<HTMLDivElement, Props>(
           onSubmit={setFilterByNumericValues}
         />
 
-        <ul className="list-unstyled">{React.Children.toArray(children)}</ul>
+        <ul className="list-unstyled">{children}</ul>
       </div>
     );
   }

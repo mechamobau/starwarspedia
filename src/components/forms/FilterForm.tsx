@@ -35,7 +35,7 @@ const initialValues: Values = {
 
 const schema = object({
   column: string().required(),
-  operation: string().required(),
+  comparison: string().required(),
   value: number().min(0).required(),
 });
 
@@ -55,10 +55,9 @@ const FilterForm = ({ columnLabels, onSubmit }: Props) => (
       isValid,
     }) => (
       <Form onSubmit={handleSubmit}>
-        <div className="px-3 py-2">
+        <div className="px-3 py-2" key="column-control">
           <FormControl
             as="select"
-            autoFocus
             className="w-100"
             name="column"
             placeholder="Coluna a ser comparada"
@@ -68,19 +67,20 @@ const FilterForm = ({ columnLabels, onSubmit }: Props) => (
             value={values.column}
           >
             {Object.entries(columnLabels).map((item) => (
-              <option value={item[0]}>{item[1]}</option>
+              <option key={item[0]} value={item[0]}>
+                {item[1]}
+              </option>
             ))}
           </FormControl>
           <FormControl.Feedback type="invalid">
             {errors.column}
           </FormControl.Feedback>
         </div>
-        <div className="px-3 py-2">
+        <div className="px-3 py-2" key="operation-control">
           <FormControl
             as="select"
-            autoFocus
             className="w-100"
-            name="operation"
+            name="comparison"
             placeholder="Operação"
             onBlur={handleBlur}
             onChange={handleChange}
@@ -88,7 +88,9 @@ const FilterForm = ({ columnLabels, onSubmit }: Props) => (
             value={values.comparison}
           >
             {Object.entries(operationsLabels).map((item) => (
-              <option value={item[0]}>{item[1]}</option>
+              <option key={item[0]} value={item[0]}>
+                {item[1]}
+              </option>
             ))}
           </FormControl>
           <FormControl.Feedback type="invalid">
@@ -97,6 +99,7 @@ const FilterForm = ({ columnLabels, onSubmit }: Props) => (
         </div>
         <FormControl
           type="number"
+          key="value-control"
           autoFocus
           className="mx-3 my-2 w-auto"
           placeholder="Valor"
