@@ -144,6 +144,6 @@ describe("Current Pagination index", () => {
       />
     );
 
-    expect(await screen.getByText(`${nextIndex}`)).toBeDisabled();
+    expect(screen.getByText(`${nextIndex}`)).toBeDisabled();
   });
 });
