@@ -20,6 +20,8 @@ import PaginationContext from "./context/usePagination";
 import PlanetsContext from "./context/usePlanets";
 import columnLabels from "./constants/columnsLabels";
 import operationsLabels from "./constants/operationsLabels";
+import SortContext, { useSort } from "./context/useSort";
+import SortDropdown from "./components/sort/SortDropdown/SortDropdown";
 
 const APP_BACKGROUND_IMAGE = process.env.PUBLIC_URL + "/assets/background.jpg";
 
@@ -77,6 +79,8 @@ function App() {
 
   const { count } = usePlanets();
 
+  const { setSort } = useSort();
+
   const {
     pagination,
     next,
@@ -113,6 +117,23 @@ function App() {
               placeholder="Filtrar por nome"
             ></FormControl>
           </FormControlWrapper>
+
+          <Dropdown className="ml-auto mr-2">
+            <Dropdown.Toggle
+              as={FilterToggle}
+              className="text-warning"
+              id="dropdown-custom-components"
+            >
+              Ordenação
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu
+              columnLabels={columnLabels}
+              align="right"
+              as={SortDropdown}
+              onSubmit={setSort}
+            ></Dropdown.Menu>
+          </Dropdown>
 
           <Dropdown>
             <Dropdown.Toggle
@@ -164,12 +185,10 @@ function App() {
         {planets?.length ? (
           <Table
             columnLabels={columnLabels}
-            data={planets.map(({ residents, films, ...item }) => {
-              return {
-                ...item,
-                films: films.length,
-              };
-            })}
+            data={planets.map(({ residents, films, ...item }) => ({
+              ...item,
+              films: films.length,
+            }))}
           />
         ) : null}
         <PaginationWrapper>
@@ -187,6 +206,7 @@ function App() {
 
 const enhance = pipe(
   withProvider(PlanetsContext),
+  withProvider(SortContext),
   withProvider(PaginationContext),
   withProvider(FilterContext)
 );

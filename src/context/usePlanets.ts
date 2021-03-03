@@ -9,6 +9,8 @@ import ComparisonEnum from "../models/enum/Comparison.enum";
 import pipe from "@bitty/pipe";
 import RawPlanet from "../models/RawPlanet";
 import mapPlanetsResponse from "../utils/mapPlanetsResponse";
+import { useSort } from "./useSort";
+import OrderEnum from "../models/enum/Order.enum";
 
 /**
  * Hook e Context Provider responsáveis por prover os dados retornados
@@ -22,15 +24,42 @@ const [PlanetsProvider, usePlanets] = constate(() => {
 
   const [planets, setPlanets] = useState<Planet[] | null>(null);
 
+  const { sort: sorts } = useSort();
+
   const [count, setCount] = useState(0);
 
-  const setCountItemsNumber = useCallback((items: ServerResponse<Planet[]>) => {
-    setCount(items.count);
+  const setCountItemsNumber = useCallback(
+    ({ count, results }: ServerResponse<Planet[]>) => {
+      setCount(count);
 
-    setPlanets(items.results);
+      setPlanets(results);
 
-    return items.results;
-  }, []);
+      return results;
+    },
+    []
+  );
+
+  const sortPlanets = useCallback(
+    (planets: Planet[]) => {
+      if (sorts === null) return planets;
+
+      return planets.sort((a, b) => {
+        const { column, order } = sorts;
+
+        const elementA = a[column];
+        const elementB = b[column];
+
+        if (elementA === null || elementB === null) return 0;
+
+        if (elementA > elementB) return order === OrderEnum.ASC ? 1 : -1;
+
+        if (elementA < elementB) return order === OrderEnum.ASC ? -1 : 1;
+
+        return 0;
+      });
+    },
+    [sorts]
+  );
 
   const filterByName = useCallback(
     (items: Planet[]) => {
@@ -74,8 +103,6 @@ const [PlanetsProvider, usePlanets] = constate(() => {
           appliedFilters = appliedFilter;
         });
 
-        console.log({ appliedFilters });
-
         return appliedFilters;
       }
 
@@ -97,6 +124,7 @@ const [PlanetsProvider, usePlanets] = constate(() => {
       .then(setCountItemsNumber)
       .then(filterByName)
       .then(filterByNumericValues)
+      .then(sortPlanets)
       .then(setFilteredPlanets)
       .catch(clearFilteredItems);
 
@@ -108,8 +136,20 @@ const [PlanetsProvider, usePlanets] = constate(() => {
 
   useEffect(() => {
     if (planets)
-      pipe(filterByName, filterByNumericValues, setFilteredPlanets)(planets);
-  }, [planets, filter, filterByName, filterByNumericValues]);
+      pipe(
+        filterByName,
+        filterByNumericValues,
+        sortPlanets,
+        setFilteredPlanets
+      )(planets);
+  }, [
+    planets,
+    filter,
+    sorts,
+    filterByName,
+    filterByNumericValues,
+    sortPlanets,
+  ]);
 
   return { planets: filteredPlanets, count };
 });
