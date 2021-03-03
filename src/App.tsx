@@ -9,7 +9,7 @@ import PaginationButtonGroup from "./components/PaginationButtonGroup/Pagination
 import { usePagination } from "./context/usePagination";
 import PublicLayout from "./components/PublicLayout/PublicLayout";
 import styled, { createGlobalStyle } from "styled-components";
-import { Dropdown } from "react-bootstrap";
+import { Button, Dropdown } from "react-bootstrap";
 import FilterToggle from "./components/filter/FilterToggle/FilterToggle";
 import FilterDropdown from "./components/filter/FilterDropdown/FilterDropdown";
 import pipe from "@bitty/pipe";
@@ -59,6 +59,19 @@ const ControlsWrapper = styled.div`
   margin-bottom: 30px;
 `;
 
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  button {
+    font-weight: bold;
+  }
+
+  p {
+    margin: 0;
+  }
+`;
+
 function App() {
   const { planets } = usePlanets();
 
@@ -71,6 +84,8 @@ function App() {
     setCountItems,
     setCurrentItem,
   } = usePagination();
+
+  const { removeFilterByNumericValues } = useFilterTable();
 
   useEffect(() => {
     setCountItems(count);
@@ -120,12 +135,24 @@ function App() {
               as={FilterDropdown}
             >
               {filter.byNumericValues?.length ? (
-                filter.byNumericValues?.map((item) => (
-                  <Dropdown.ItemText>{`${
-                    columnLabels[item.column]
-                  } ${operationsLabels[item.comparison].toLowerCase()} ${
-                    item.value
-                  }`}</Dropdown.ItemText>
+                filter.byNumericValues?.map((item, index) => (
+                  <Dropdown.ItemText key={item.column + index}>
+                    <Wrapper>
+                      <Button
+                        className="mr-2"
+                        variant="outline-danger"
+                        size="sm"
+                        onClick={() => removeFilterByNumericValues(item.column)}
+                      >
+                        &times;
+                      </Button>
+                      <p style={{ display: "flex" }}>
+                        {`${columnLabels[item.column]} ${operationsLabels[
+                          item.comparison
+                        ].toLowerCase()} ${item.value}`}
+                      </p>
+                    </Wrapper>
+                  </Dropdown.ItemText>
                 ))
               ) : (
                 <Dropdown.ItemText>Nenhum filtro cadastrado</Dropdown.ItemText>
