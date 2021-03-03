@@ -100,6 +100,9 @@ const [PlanetsProvider, usePlanets] = constate(() => {
       .then(setFilteredPlanets)
       .catch(clearFilteredItems);
 
+    // A regra do ESLint pede para que o "filter" seja declarado como deps,
+    // ela está desativada nesta linha para que não
+    // seja feito um novo request caso o filtro seja alterado.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pagination]);
 
