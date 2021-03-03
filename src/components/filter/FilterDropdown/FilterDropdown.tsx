@@ -1,4 +1,5 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useMemo } from "react";
+import { useFilterTable } from "../../../context/useFilterTable";
 
 import { NumericPlanetValues } from "../../../models/Planet";
 import FilterForm from "../../forms/FilterForm";
@@ -13,13 +14,35 @@ type Props = {
 };
 
 const FilterDropdown = React.forwardRef<HTMLDivElement, Props>(
-  ({ children, className, labeledBy, columnLabels }, ref) => (
-    <div ref={ref} className={className} aria-labelledby={labeledBy}>
-      <FilterForm columnLabels={columnLabels} />
+  ({ children, className, labeledBy, columnLabels }, ref) => {
+    const { filter, setFilterByNumericValues } = useFilterTable();
 
-      <ul className="list-unstyled">{React.Children.toArray(children)}</ul>
-    </div>
-  )
+    const formColumnLabels = useMemo(() => {
+      const columnLabelsArray = Object.entries(columnLabels);
+
+      const filterColumnNames = filter.byNumericValues.map(
+        ({ column }) => column
+      );
+
+      return Object.fromEntries(
+        columnLabelsArray.filter(
+          ([columnName]) =>
+            !filterColumnNames.includes(columnName as keyof NumericPlanetValues)
+        )
+      );
+    }, [columnLabels, filter]);
+
+    return (
+      <div ref={ref} className={className} aria-labelledby={labeledBy}>
+        <FilterForm
+          columnLabels={formColumnLabels}
+          onSubmit={setFilterByNumericValues}
+        />
+
+        <ul className="list-unstyled">{React.Children.toArray(children)}</ul>
+      </div>
+    );
+  }
 );
 
 export default FilterDropdown;
