@@ -19,7 +19,7 @@ type Action =
     }
   | {
       type: ActionTypeEnum.REMOVE_NUMERIC_VALUE_FILTER;
-      value: Pick<NumericValueFilter, "column">;
+      value: NumericValueFilter["column"];
     };
 
 const initialValue: FilterList = {
@@ -60,7 +60,7 @@ const reducer = (state: FilterList, action: Action): FilterList => {
         filters: {
           ...state.filters,
           byNumericValues: state.filters.byNumericValues.filter(
-            ({ column }) => column !== action.value.column
+            ({ column }) => column !== action.value
           ),
         },
       };
@@ -89,7 +89,7 @@ const [FilterTableProvider, useFilterTable] = constate(() => {
   );
 
   const removeFilterByNumericValues = useCallback(
-    (value: Pick<NumericValueFilter, "column">) =>
+    (value: NumericValueFilter["column"]) =>
       dispatch({ type: ActionTypeEnum.REMOVE_NUMERIC_VALUE_FILTER, value }),
     []
   );
