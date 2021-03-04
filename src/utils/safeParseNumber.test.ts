@@ -1,4 +1,3 @@
-import React from "react";
 import safeParseNumber from "./safeParseNumber";
 
 it("should return 0 if it's not possible to parse number", () => {
