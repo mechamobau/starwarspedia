@@ -1,9 +1,8 @@
 import React, { useCallback, useMemo } from "react";
-
-import { Pagination } from "../../../context/usePagination";
-
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
+
+import { Pagination } from "../../../context/usePagination";
 
 /**
  * Props do componente `PaginationButtonGroup`

@@ -1,5 +1,5 @@
-import { useCallback, useReducer } from "react";
 import constate from "constate";
+import { useCallback, useReducer } from "react";
 
 /**
  * Constante que define o limite de itens exibidos por visualização de paginação.

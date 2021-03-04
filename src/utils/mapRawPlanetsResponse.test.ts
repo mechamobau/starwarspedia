@@ -1,22 +1,5 @@
 import mapRawPlanetsResponse from "./mapRawPlanetsResponse";
 
-// const rawPlanetsValue = {
-//   name: string;
-//   climate: string;
-//   gravity: string;
-//   terrain: string;
-//   residents: string[];
-//   films: string[];
-//   created: string;
-//   edited: string;
-//   url: string;
-//   rotation_period: string;
-//   orbital_period: string;
-//   surface_water: string;
-//   population: string;
-//   diameter: string;
-// };
-
 it("should return parsed values in number nodes", () => {
   const rawPlanetsValue = {
     name: "Tatooine",

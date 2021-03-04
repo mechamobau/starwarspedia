@@ -1,16 +1,13 @@
+import { Form, Formik } from "formik";
 import React from "react";
-
 import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl";
+import { number, object, string } from "yup";
 
-import type { NumericPlanetValues } from "../../models/Planet";
-
+import operationsLabels from "../../constants/operationsLabels";
 import ComparisonEnum from "../../models/enum/Comparison.enum";
 
-import { Form, Formik } from "formik";
-
-import { object, string, number } from "yup";
-import operationsLabels from "../../constants/operationsLabels";
+import type { NumericPlanetValues } from "../../models/Planet";
 
 type NumericColumnLabels = {
   [key in keyof NumericPlanetValues]: string;

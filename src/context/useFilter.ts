@@ -1,5 +1,6 @@
-import { useCallback, useReducer } from "react";
 import constate from "constate";
+import { useCallback, useReducer } from "react";
+
 import { FilterList, NumericValueFilter } from "./FilterList.type";
 
 enum ActionTypeEnum {

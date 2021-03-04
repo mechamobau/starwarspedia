@@ -1,8 +1,8 @@
 import React from "react";
 
-import type Planet from "../../../models/Planet";
 import SortForm, { Values as SortFormValues } from "../../forms/SortForm";
 
+import type Planet from "../../../models/Planet";
 type Props = {
   className?: string;
   labeledBy?: string;

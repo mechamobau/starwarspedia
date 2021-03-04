@@ -1,5 +1,6 @@
 import type RawPlanet from "../models/RawPlanet";
 import safeParseNumber from "./safeParseNumber";
+
 import type Planet from "../models/Planet";
 
 /**

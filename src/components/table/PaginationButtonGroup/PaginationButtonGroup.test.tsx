@@ -1,16 +1,15 @@
 import React from "react";
 
-import PaginationButtonGroup from "./PaginationButtonGroup";
-
 import {
-  render,
-  fireEvent,
-  cleanup,
   act,
+  cleanup,
+  fireEvent,
+  render,
   screen,
 } from "@testing-library/react";
-
 import userEvent from "@testing-library/user-event";
+
+import PaginationButtonGroup from "./PaginationButtonGroup";
 
 afterAll(cleanup);
 

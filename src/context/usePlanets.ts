@@ -1,16 +1,19 @@
-import { useCallback, useEffect, useState } from "react";
-import type ServerResponse from "../models/ServerResponse";
 import constate from "constate";
-import { usePagination } from "./usePagination";
-import type Planet from "../models/Planet";
-import { server } from "../services/axios";
-import { useFilter } from "./useFilter";
-import ComparisonEnum from "../models/enum/Comparison.enum";
+import { useCallback, useEffect, useState } from "react";
+
 import pipe from "@bitty/pipe";
-import type RawPlanet from "../models/RawPlanet";
-import mapPlanetsResponse from "../utils/mapRawPlanetsResponse";
-import { useSort } from "./useSort";
+
+import ComparisonEnum from "../models/enum/Comparison.enum";
 import OrderEnum from "../models/enum/Order.enum";
+import { server } from "../services/axios";
+import mapPlanetsResponse from "../utils/mapRawPlanetsResponse";
+import { useFilter } from "./useFilter";
+import { usePagination } from "./usePagination";
+import { useSort } from "./useSort";
+
+import type ServerResponse from "../models/ServerResponse";
+import type Planet from "../models/Planet";
+import type RawPlanet from "../models/RawPlanet";
 import type { AxiosResponse } from "axios";
 
 /**

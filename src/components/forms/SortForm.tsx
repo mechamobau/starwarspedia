@@ -1,17 +1,13 @@
+import { Form, Formik } from "formik";
 import React from "react";
-
 import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl";
 
-import type Planet from "../../models/Planet";
-
+import orderLabels from "../../constants/orderLabels";
+import { initialValues } from "../../context/useSort";
 import OrderEnum from "../../models/enum/Order.enum";
 
-import { Form, Formik } from "formik";
-
-import orderLabels from "../../constants/orderLabels";
-
-import { initialValues } from "../../context/useSort";
+import type Planet from "../../models/Planet";
 
 type PlanetLabels = {
   [key in keyof Planet]: string;

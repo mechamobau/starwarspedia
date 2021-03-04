@@ -1,4 +1,5 @@
 import ComparisonEnum from "../models/enum/Comparison.enum";
+
 import type Planet from "../models/Planet";
 
 /**

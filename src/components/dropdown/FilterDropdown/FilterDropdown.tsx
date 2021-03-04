@@ -1,9 +1,9 @@
 import React, { ReactNode, useMemo } from "react";
-import { useFilter } from "../../../context/useFilter";
 
-import type { NumericPlanetValues } from "../../../models/Planet";
+import { useFilter } from "../../../context/useFilter";
 import FilterForm from "../../forms/FilterForm";
 
+import type { NumericPlanetValues } from "../../../models/Planet";
 type Props = {
   children: ReactNode[];
   className?: string;

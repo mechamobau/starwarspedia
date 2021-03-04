@@ -1,27 +1,23 @@
 import React, { useCallback, useEffect } from "react";
-import Table from "./components/table/Table/Table";
-
-import { usePlanets } from "./context/usePlanets";
-
-import FormControl from "react-bootstrap/FormControl";
-import { useFilter } from "./context/useFilter";
-import PaginationButtonGroup from "./components/table/PaginationButtonGroup/PaginationButtonGroup";
-import { usePagination } from "./context/usePagination";
-import PublicLayout from "./components/global/PublicLayout/PublicLayout";
-import styled, { createGlobalStyle } from "styled-components";
 import { Button, Dropdown } from "react-bootstrap";
+import FormControl from "react-bootstrap/FormControl";
+import styled, { createGlobalStyle } from "styled-components";
+
+import pipe from "@bitty/pipe";
+
 import FilterToggle from "./components/dropdown/DropdownToggle/FilterToggle";
 import FilterDropdown from "./components/dropdown/FilterDropdown/FilterDropdown";
-import pipe from "@bitty/pipe";
-import withProvider from "./utils/react/withProvider";
-
-import FilterContext from "./context/useFilter";
-import PaginationContext from "./context/usePagination";
-import PlanetsContext from "./context/usePlanets";
+import SortDropdown from "./components/dropdown/SortDropdown/SortDropdown";
+import PublicLayout from "./components/global/PublicLayout/PublicLayout";
+import PaginationButtonGroup from "./components/table/PaginationButtonGroup/PaginationButtonGroup";
+import Table from "./components/table/Table/Table";
 import columnLabels from "./constants/columnsLabels";
 import operationsLabels from "./constants/operationsLabels";
+import FilterContext, { useFilter } from "./context/useFilter";
+import PaginationContext, { usePagination } from "./context/usePagination";
+import PlanetsContext, { usePlanets } from "./context/usePlanets";
 import SortContext, { useSort } from "./context/useSort";
-import SortDropdown from "./components/dropdown/SortDropdown/SortDropdown";
+import withProvider from "./utils/react/withProvider";
 
 const APP_BACKGROUND_IMAGE = process.env.PUBLIC_URL + "/assets/background.jpg";
 
