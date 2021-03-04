@@ -8,9 +8,19 @@ import { useFilter } from "./useFilter";
 import ComparisonEnum from "../models/enum/Comparison.enum";
 import pipe from "@bitty/pipe";
 import type RawPlanet from "../models/RawPlanet";
-import mapRawPlanetsResponse from "../utils/mapRawPlanetsResponse";
+import mapPlanetsResponse from "../utils/mapRawPlanetsResponse";
 import { useSort } from "./useSort";
 import OrderEnum from "../models/enum/Order.enum";
+import type { AxiosResponse } from "axios";
+
+/**
+ * Função auxiliar resposável por extrair o `data`
+ * de dentro da response
+ * @param response - Resposta retornada pelo servidor
+ */
+const extractDataReponse = ({
+  data,
+}: AxiosResponse<ServerResponse<RawPlanet[]>>) => data;
 
 /**
  * Hook e Context Provider responsáveis por prover os dados retornados
@@ -29,7 +39,7 @@ const [PlanetsProvider, usePlanets] = constate(() => {
   const [count, setCount] = useState(0);
 
   const setCountItemsNumber = useCallback(
-    ({ count, results }: ServerResponse<Planet[]>) => {
+    (count: number) => (results: Planet[]) => {
       setCount(count);
 
       setPlanets(results);
@@ -120,8 +130,10 @@ const [PlanetsProvider, usePlanets] = constate(() => {
       .get<ServerResponse<RawPlanet[]>>("/planets/", {
         params,
       })
-      .then(mapRawPlanetsResponse)
-      .then(setCountItemsNumber)
+      .then(extractDataReponse)
+      .then(({ count, results }) =>
+        pipe(mapPlanetsResponse, setCountItemsNumber(count))(results)
+      )
       .then(filterByName)
       .then(filterByNumericValues)
       .then(sortPlanets)

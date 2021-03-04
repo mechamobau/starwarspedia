@@ -1,30 +1,29 @@
-import { AxiosResponse } from "axios";
 import type RawPlanet from "../models/RawPlanet";
 import safeParseNumber from "./safeParseNumber";
 import type Planet from "../models/Planet";
-import type ServerResponse from "../models/ServerResponse";
 
-const mapRawPlanetsResponse = ({
-  data: { results, ...items },
-}: AxiosResponse<ServerResponse<RawPlanet[]>>): ServerResponse<Planet[]> => ({
-  results: results.map(
+/**
+ * Função responsável por mapear os items que vêm com os tipos
+ * errados vindos da _API_
+ * @param rawValue - Lista de items com os tipos errados
+ */
+const mapRawPlanetsResponse = (rawValue: RawPlanet[]): Planet[] =>
+  rawValue.map(
     ({
       rotation_period,
       orbital_period,
       surface_water,
       population,
       diameter,
-      ...item
+      ...items
     }) => ({
-      ...item,
+      ...items,
       rotation_period: safeParseNumber(rotation_period),
       orbital_period: safeParseNumber(orbital_period),
       surface_water: safeParseNumber(surface_water),
       population: safeParseNumber(population),
       diameter: safeParseNumber(diameter),
     })
-  ),
-  ...items,
-});
+  );
 
 export default mapRawPlanetsResponse;
