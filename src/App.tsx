@@ -36,9 +36,17 @@ const GlobalStyle = createGlobalStyle`
 
 const Title = styled.h1`
   text-align: center;
-  font-size: 7em;
+  font-size: 1.9em;
   font-family: "Star Jedi", Arial, sans-serif;
   margin-bottom: 30px;
+
+  @media (min-width: 768px) {
+    font-size: 5em;
+  }
+
+  @media (min-width: 1024) {
+    font-size: 7em;
+  }
 `;
 
 const PaginationWrapper = styled.div`
@@ -48,13 +56,35 @@ const PaginationWrapper = styled.div`
   margin-bottom: 50px;
 `;
 
-const FormControlWrapper = styled.div``;
+const FormControlWrapper = styled.div`
+  width: 100%;
+`;
 
 const ControlsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-direction: column-reverse;
   align-items: center;
   margin-bottom: 30px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+`;
+
+const DropdownWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 10px 0;
+
+  @media (min-width: 768px) {
+    justify-content: flex-end;
+
+    .dropdown {
+      margin: 0 5px;
+    }
+  }
 `;
 
 const Wrapper = styled.div`
@@ -114,68 +144,74 @@ function App() {
             ></FormControl>
           </FormControlWrapper>
 
-          <Dropdown className="ml-auto mr-2">
-            <Dropdown.Toggle
-              as={FilterToggle}
-              className="text-warning"
-              id="dropdown-custom-components"
-            >
-              Ordenação
-            </Dropdown.Toggle>
+          <DropdownWrapper>
+            <Dropdown>
+              <Dropdown.Toggle
+                as={FilterToggle}
+                className="text-warning"
+                id="dropdown-custom-components"
+              >
+                Ordenação
+              </Dropdown.Toggle>
 
-            <Dropdown.Menu
-              columnLabels={columnLabels}
-              align="right"
-              as={SortDropdown}
-              onSubmit={setSort}
-            ></Dropdown.Menu>
-          </Dropdown>
+              <Dropdown.Menu
+                columnLabels={columnLabels}
+                align="right"
+                as={SortDropdown}
+                onSubmit={setSort}
+              ></Dropdown.Menu>
+            </Dropdown>
 
-          <Dropdown>
-            <Dropdown.Toggle
-              as={FilterToggle}
-              className="text-warning"
-              id="dropdown-custom-components"
-            >
-              Filtros
-            </Dropdown.Toggle>
+            <Dropdown>
+              <Dropdown.Toggle
+                as={FilterToggle}
+                className="text-warning"
+                id="dropdown-custom-components"
+              >
+                Filtros
+              </Dropdown.Toggle>
 
-            <Dropdown.Menu
-              columnLabels={{
-                diameter: columnLabels.diameter,
-                orbital_period: columnLabels.orbital_period,
-                population: columnLabels.population,
-                rotation_period: columnLabels.rotation_period,
-                surface_water: columnLabels.surface_water,
-              }}
-              align="right"
-              as={FilterDropdown}
-            >
-              {filter.byNumericValues?.length ? (
-                filter.byNumericValues?.map((item, index) => (
-                  <Dropdown.ItemText key={item.column + index}>
-                    <Wrapper>
-                      <Button
-                        className="mr-2"
-                        variant="outline-danger"
-                        size="sm"
-                        onClick={() => removeFilterByNumericValues(item.column)}
-                      >
-                        &times;
-                      </Button>
-                      <p style={{ display: "flex" }}>
-                        {`${columnLabels[item.column]} ${operationsLabels[
-                          item.comparison
-                        ].toLowerCase()} ${item.value}`}
-                      </p>
-                    </Wrapper>
+              <Dropdown.Menu
+                columnLabels={{
+                  diameter: columnLabels.diameter,
+                  orbital_period: columnLabels.orbital_period,
+                  population: columnLabels.population,
+                  rotation_period: columnLabels.rotation_period,
+                  surface_water: columnLabels.surface_water,
+                }}
+                align="right"
+                as={FilterDropdown}
+              >
+                {filter.byNumericValues?.length ? (
+                  filter.byNumericValues?.map((item, index) => (
+                    <Dropdown.ItemText key={item.column + index}>
+                      <Wrapper>
+                        <Button
+                          className="mr-2"
+                          variant="outline-danger"
+                          size="sm"
+                          onClick={() =>
+                            removeFilterByNumericValues(item.column)
+                          }
+                        >
+                          &times;
+                        </Button>
+                        <p style={{ display: "flex" }}>
+                          {`${columnLabels[item.column]} ${operationsLabels[
+                            item.comparison
+                          ].toLowerCase()} ${item.value}`}
+                        </p>
+                      </Wrapper>
+                    </Dropdown.ItemText>
+                  ))
+                ) : (
+                  <Dropdown.ItemText>
+                    Nenhum filtro cadastrado
                   </Dropdown.ItemText>
-                ))
-              ) : (
-                <Dropdown.ItemText>Nenhum filtro cadastrado</Dropdown.ItemText>
-              )}
-            </Dropdown.Menu>
-          </Dropdown>
+                )}
+              </Dropdown.Menu>
+            </Dropdown>
+          </DropdownWrapper>
         </ControlsWrapper>
 
         {planets?.length ? (
