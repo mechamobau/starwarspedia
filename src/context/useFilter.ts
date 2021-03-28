@@ -65,9 +65,6 @@ const reducer = (state: FilterList, action: Action): FilterList => {
 					),
 				},
 			};
-
-		default:
-			throw new Error("Provided value non exists in `ActionTypeEnum`");
 	}
 };
 
