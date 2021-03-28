@@ -8,7 +8,7 @@ import pipe from "@bitty/pipe";
 import FilterToggle from "./components/dropdown/FilterToggle";
 import FilterDropdown from "./components/dropdown/FilterDropdown";
 import SortDropdown from "./components/dropdown/SortDropdown";
-import PublicLayout from "./components/global/PublicLayout/PublicLayout";
+import PublicLayout from "./components/global/PublicLayout";
 import PaginationButtonGroup from "./components/table/PaginationButtonGroup";
 import Table from "./components/table/Table";
 import columnLabels from "./constants/columnsLabels";
