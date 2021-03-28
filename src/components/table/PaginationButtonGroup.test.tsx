@@ -76,25 +76,38 @@ describe("Previous & Next control buttons", () => {
 		expect(queryByTestId("next-button")).toBe(null);
 	});
 });
-it("should display items to change pagination index", () => {
-	const totalViewsCount = 3;
 
-	const numberOfControlButtons = 2;
+describe("Pagination items", () => {
+	it("should display items to change pagination index", () => {
+		const totalViewsCount = 3;
 
-	const { getByRole } = render(
-		<PaginationButtonGroup
-			pagination={{
-				current: 1,
-				next: 2,
-				previous: 0,
-				viewsCount: totalViewsCount,
-			}}
-		/>
-	);
+		const numberOfControlButtons = 2;
 
-	expect(getByRole("menu").children.length).toBe(
-		totalViewsCount + numberOfControlButtons
-	);
+		const { getByRole } = render(
+			<PaginationButtonGroup
+				pagination={{
+					current: 1,
+					next: 2,
+					previous: 0,
+					viewsCount: totalViewsCount,
+				}}
+			/>
+		);
+
+		expect(getByRole("menu").children.length).toBe(
+			totalViewsCount + numberOfControlButtons
+		);
+	});
+
+	it("shouldn't render no items if no items exists", () => {
+		const { getByRole } = render(
+			<PaginationButtonGroup
+				pagination={{ current: 1, previous: null, next: null }}
+			/>
+		);
+
+		expect(getByRole("menu").children.length).toBe(0);
+	});
 });
 
 describe("Current Pagination index", () => {
