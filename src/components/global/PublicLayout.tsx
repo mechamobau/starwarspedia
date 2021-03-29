@@ -13,10 +13,10 @@ const Container = styled.section`
 	padding-right: 15px;
 `;
 
-export const testId = "public-layout-container";
+export const TEST_ID = "public-layout-container";
 
 const PublicLayout = ({ children }: Props) => {
-	return <Container data-testid={testId}>{children}</Container>;
+	return <Container data-testid={TEST_ID}>{children}</Container>;
 };
 
 export default PublicLayout;

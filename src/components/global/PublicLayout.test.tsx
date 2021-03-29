@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import PublicLayout, { testId } from "./PublicLayout";
+import PublicLayout, { TEST_ID } from "./PublicLayout";
 
 const dummyText = "";
 const MockComponent = () => <p>{dummyText}</p>;
@@ -11,5 +11,5 @@ it("should render a child component", () => {
 		</PublicLayout>
 	);
 
-	expect(getByTestId(testId).children[0].innerHTML).toBe(dummyText);
+	expect(getByTestId(TEST_ID).children[0].innerHTML).toBe(dummyText);
 });
