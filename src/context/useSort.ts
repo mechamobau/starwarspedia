@@ -8,7 +8,7 @@ import type Planet from "../models/Planet";
 /**
  * Tipo que define a coluna a ser ordena e em qual ordem.
  */
-type Sort = {
+export type Sort = {
   column: keyof Planet;
   order: OrderEnum;
 };
