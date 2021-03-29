@@ -7,11 +7,11 @@ import { useCallback, useReducer } from "react";
 export const LIMIT_PER_VIEW_PAGINATION = 10;
 
 export type Pagination = {
-  current: number;
-  previous: number | null;
-  next: number | null;
-  totalItemsCount?: number;
-  viewsCount?: number;
+  readonly current: number;
+  readonly previous: number | null;
+  readonly next: number | null;
+  readonly totalItemsCount?: number;
+  readonly viewsCount?: number;
 };
 
 enum ActionTypeEnum {
@@ -99,8 +99,6 @@ const reducer = (state: Pagination, action: Action): Pagination => {
 
       const previous = current <= 1 ? null : current - 1;
 
-      console.log({ current_item: { previous, current, next } });
-
       return {
         ...state,
         current,
@@ -108,11 +106,6 @@ const reducer = (state: Pagination, action: Action): Pagination => {
         previous,
       };
     }
-
-    default:
-      throw new Error(
-        "Provided action type does not exists in `ActionTypeEnum`"
-      );
   }
 };
 
