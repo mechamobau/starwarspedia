@@ -101,9 +101,7 @@ const Wrapper = styled.div`
 `;
 
 function App() {
-	const { planets } = usePlanets();
-
-	const { count } = usePlanets();
+	const { planets, count } = usePlanets();
 
 	const { setSort } = useSort();
 
@@ -115,13 +113,11 @@ function App() {
 		setCurrentItem,
 	} = usePagination();
 
-	const { removeFilterByNumericValues } = useFilter();
+	const { removeFilterByNumericValues, filter, setFilterByName } = useFilter();
 
 	useEffect(() => {
 		setCountItems(count);
 	}, [count, setCountItems]);
-
-	const { filter, setFilterByName } = useFilter();
 
 	const handleFilterByNameChange = useCallback(
 		(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -228,7 +224,7 @@ function App() {
 						pagination={pagination}
 						onNextButtonClick={next}
 						onPreviousButtonClick={previous}
-						onPaginationChange={(index) => setCurrentItem(index)}
+						onPaginationChange={setCurrentItem}
 					/>
 				</PaginationWrapper>
 			</PublicLayout>
