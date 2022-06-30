@@ -36,6 +36,8 @@ const schema = object({
   value: number().min(0).required(),
 });
 
+
+
 const FilterForm = ({ columnLabels, onSubmit }: Props) => (
   <Formik<Values>
     initialValues={initialValues}
