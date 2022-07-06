@@ -27,19 +27,22 @@ function Table<T>({ data, columnLabels }: Props<T>) {
         </tr>
       </thead>
       <tbody>
-        {data.length
-          ? data.map((item) => {
+        {/* Condição redundante, quando o array está vazio o map irá retornar um array vazio e isso não irá renderizar nada de qualquer forma */}
+        {data.map((item) => {
               const keys = Object.keys(item);
 
               return (
-                <tr key={new Date().getTime() + Math.random()}>
+                <tr key={new Date().getTime() + Math.random()}> 
+                {/* Não se deve utilizar como key valores que sempre irão mudar (Date, Random e etc),
+                fazendo isso você irá provocar uma renderização desnecessária de todos elementos do map sempre que o componente renderizar,
+                o melhor nesse caso é utilizar o index como key, o index só não é a uma boa opção quando os elementos do array mudam de ordem*/}
                   {keys.map((key) => (
                     <td key={key + Math.random()}>{(item as any)[key]}</td>
                   ))}
                 </tr>
               );
             })
-          : null}
+        }
       </tbody>
     </BSTable>
   );
