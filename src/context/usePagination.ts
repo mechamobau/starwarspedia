@@ -26,6 +26,8 @@ const usePagination = create<PaginationState>((set) => ({
     current: 1,
     previous: null,
     next: null,
+    totalItemsCount: 0,
+    viewsCount: 0,
   },
   totalItemsCount: undefined,
   viewsCount: undefined,
@@ -42,6 +44,7 @@ const usePagination = create<PaginationState>((set) => ({
       return {
         ...state,
         pagination: {
+          ...state.pagination,
           current,
           next,
           previous,
@@ -58,6 +61,7 @@ const usePagination = create<PaginationState>((set) => ({
       return {
         ...state,
         pagination: {
+          ...state.pagination,
           current,
           next,
           previous,
@@ -81,6 +85,7 @@ const usePagination = create<PaginationState>((set) => ({
         ...state,
         pagination: {
           ...state.pagination,
+          viewsCount,
           previous,
           next,
         },
