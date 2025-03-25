@@ -1,17 +1,17 @@
-import React, { useCallback, useMemo } from "react";
-import Button from "react-bootstrap/Button";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
+import React, { useCallback, useMemo } from 'react';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
-import { Pagination } from "../../context/usePagination";
+import { Pagination } from '../../context/usePagination';
 
 /**
  * Props do componente `PaginationButtonGroup`
  */
 type Props = {
-	pagination: Pagination;
-	onPreviousButtonClick?: () => void;
-	onNextButtonClick?: () => void;
-	onPaginationChange?: (index: number) => void;
+  pagination: Pagination;
+  onPreviousButtonClick?: () => void;
+  onNextButtonClick?: () => void;
+  onPaginationChange?: (index: number) => void;
 };
 
 /**
@@ -19,53 +19,54 @@ type Props = {
  * mudança de valores.
  */
 const PaginationButtonGroup = ({
-	pagination,
-	onPreviousButtonClick,
-	onNextButtonClick,
-	onPaginationChange,
+  pagination,
+  onPreviousButtonClick,
+  onNextButtonClick,
+  onPaginationChange,
 }: Props) => {
-	const items = useMemo(
-		() => Array.from({ length: pagination.viewsCount ?? 0 }, (_, i) => i + 1),
-		[pagination]
-	);
+  const items = useMemo(
+    () => Array.from({ length: pagination.viewsCount ?? 0 }, (_, i) => i + 1),
+    [pagination]
+  );
+  console.log({ items, pagination });
 
-	const handlePaginationChange = useCallback(
-		(index: number) => () => onPaginationChange?.(index),
-		[onPaginationChange]
-	);
+  const handlePaginationChange = useCallback(
+    (index: number) => () => onPaginationChange?.(index),
+    [onPaginationChange]
+  );
 
-	return (
-		<ButtonGroup role="menu" aria-label="Controles de Paginação">
-			{pagination.previous !== null ? (
-				<Button
-					variant="warning"
-					data-testid="previous-button"
-					onClick={onPreviousButtonClick}
-				>
-					Anterior
-				</Button>
-			) : null}
-			{items.map((index) => (
-				<Button
-					key={index}
-					variant={index === pagination.current ? "outline-warning" : "warning"}
-					disabled={index === pagination.current}
-					onClick={handlePaginationChange(index)}
-				>
-					{index}
-				</Button>
-			))}
-			{pagination.next !== null ? (
-				<Button
-					variant="warning"
-					data-testid="next-button"
-					onClick={onNextButtonClick}
-				>
-					Próximo
-				</Button>
-			) : null}
-		</ButtonGroup>
-	);
+  return (
+    <ButtonGroup role="menu" aria-label="Controles de Paginação">
+      {pagination.previous !== null ? (
+        <Button
+          variant="warning"
+          data-testid="previous-button"
+          onClick={onPreviousButtonClick}
+        >
+          Anterior
+        </Button>
+      ) : null}
+      {items.map((index) => (
+        <Button
+          key={index}
+          variant={index === pagination.current ? 'outline-warning' : 'warning'}
+          disabled={index === pagination.current}
+          onClick={handlePaginationChange(index)}
+        >
+          {index}
+        </Button>
+      ))}
+      {pagination.next !== null ? (
+        <Button
+          variant="warning"
+          data-testid="next-button"
+          onClick={onNextButtonClick}
+        >
+          Próximo
+        </Button>
+      ) : null}
+    </ButtonGroup>
+  );
 };
 
 export default PaginationButtonGroup;

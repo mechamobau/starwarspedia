@@ -17,9 +17,8 @@ import { useFilter } from './context/useFilter';
 import { usePagination } from './context/usePagination';
 import { usePlanets } from './context/usePlanets';
 import { useSort } from './context/useSort';
-import withProvider from './utils/react/withProvider';
 
-const APP_BACKGROUND_IMAGE = process.env.PUBLIC_URL + '/assets/background.jpg';
+const APP_BACKGROUND_IMAGE = process.env.PUBLIC_URL + '/background.jpg';
 
 const GlobalStyle = createGlobalStyle`
   html, body {
