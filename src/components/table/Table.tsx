@@ -1,14 +1,14 @@
-import React, { useMemo } from "react";
-import BSTable from "react-bootstrap/Table";
+import React, { useMemo } from 'react';
+import BSTable from 'react-bootstrap/Table';
 
-type Props<T extends any> = {
+type Props<T extends object> = {
   data: T[];
   columnLabels?: {
     [key: string]: string;
   };
 };
 
-function Table<T>({ data, columnLabels }: Props<T>) {
+function Table<T extends object>({ data, columnLabels }: Props<T>) {
   const columns = useMemo(() => {
     if (!data.length) return [];
 

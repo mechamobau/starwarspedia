@@ -1,13 +1,13 @@
-import { Form, Formik } from "formik";
-import React from "react";
-import Button from "react-bootstrap/Button";
-import FormControl from "react-bootstrap/FormControl";
+import { Form, Formik } from 'formik';
+import React from 'react';
+import Button from 'react-bootstrap/Button';
+import FormControl from 'react-bootstrap/FormControl';
 
-import orderLabels from "../../constants/orderLabels";
-import { initialValues } from "../../context/useSort";
-import OrderEnum from "../../models/enum/Order.enum";
+import orderLabels from '../../constants/orderLabels';
+import { initialValues } from '../../context/useSort';
+import OrderEnum from '../../models/enum/Order.enum';
 
-import type Planet from "../../models/Planet";
+import type Planet from '../../models/Planet';
 
 type PlanetLabels = {
   [key in keyof Planet]: string;
@@ -34,7 +34,7 @@ const SortForm = ({ columnLabels, disabled = false, onSubmit }: Props) => (
             as="select"
             className="w-100"
             name="column"
-            placeholder="Coluna a ser comparada"
+            // placeholder="Coluna a ser comparada"
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.column}
@@ -52,7 +52,7 @@ const SortForm = ({ columnLabels, disabled = false, onSubmit }: Props) => (
             as="select"
             className="w-100"
             name="order"
-            placeholder="Ordenação"
+            // placeholder="Ordenação"
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.order}
