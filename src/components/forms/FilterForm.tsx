@@ -1,13 +1,13 @@
-import { Form, Formik } from "formik";
-import React from "react";
-import Button from "react-bootstrap/Button";
-import FormControl from "react-bootstrap/FormControl";
-import { number, object, string } from "yup";
+import { Form, Formik } from 'formik';
+import React from 'react';
+import Button from 'react-bootstrap/Button';
+import FormControl from 'react-bootstrap/FormControl';
+import { number, object, string } from 'yup';
 
-import operationsLabels from "../../constants/operationsLabels";
-import ComparisonEnum from "../../models/enum/Comparison.enum";
+import operationsLabels from '../../constants/operationsLabels';
+import ComparisonEnum from '../../models/enum/Comparison.enum';
 
-import type { NumericPlanetValues } from "../../models/Planet";
+import type { NumericPlanetValues } from '../../models/Planet';
 
 type NumericColumnLabels = {
   [key in keyof NumericPlanetValues]: string;
@@ -25,7 +25,7 @@ type Values = {
 };
 
 const initialValues: Values = {
-  column: "diameter",
+  column: 'diameter',
   comparison: ComparisonEnum.EQUALS,
   value: 0,
 };
@@ -59,7 +59,7 @@ const FilterForm = ({ columnLabels, onSubmit }: Props) => (
             as="select"
             className="w-100"
             name="column"
-            placeholder="Coluna a ser comparada"
+            // placeholder="Coluna a ser comparada"
             onBlur={handleBlur}
             onChange={handleChange}
             isInvalid={dirty && Boolean(errors.column)}
@@ -80,7 +80,7 @@ const FilterForm = ({ columnLabels, onSubmit }: Props) => (
             as="select"
             className="w-100"
             name="comparison"
-            placeholder="Operação"
+            // placeholder="Operação"
             onBlur={handleBlur}
             onChange={handleChange}
             isInvalid={dirty && Boolean(errors.comparison)}

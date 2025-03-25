@@ -11,7 +11,7 @@ Este projeto tem como proposta a criação de uma tabela:
 - Filtrável
 - Com paginação
 
-Esta tabela exibe **todos os planetas** do universo _Star Wars_. Para seu _frontend_ foi utilizada a tecnologia React, com as bilbiotecas [styled-components](https://styled-components.com/), [constate](https://github.com/diegohaz/constate), [create-react-app](https://github.com/facebook/create-react-app) e [TypeScript](https://www.typescriptlang.org/).
+Esta tabela exibe **todos os planetas** do universo _Star Wars_. Para seu _frontend_ foi utilizada a tecnologia React, com as bilbiotecas [styled-components](https://styled-components.com/), [zustand](https://github.com/pmndrs/zustand), [create-react-app](https://github.com/facebook/create-react-app) e [TypeScript](https://www.typescriptlang.org/).
 
 ## Preview
 

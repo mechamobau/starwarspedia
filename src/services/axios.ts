@@ -1,7 +1,7 @@
-import axios from "axios";
-
+import axios from 'axios';
+console.log({ BASE_URL_API: process.env.BASE_URL_API });
 const server = axios.create({
-  baseURL: "https://swapi-trybe.herokuapp.com/api",
+  baseURL: process.env.BASE_URL_API,
   timeout: 1000,
 });
 

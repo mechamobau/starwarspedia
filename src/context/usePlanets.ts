@@ -1,20 +1,20 @@
-import constate from "constate";
-import { useCallback, useEffect, useState } from "react";
+import { create } from 'zustand';
+import { useCallback, useEffect } from 'react';
 
-import pipe from "@bitty/pipe";
+import pipe from '@bitty/pipe';
 
-import ComparisonEnum from "../models/enum/Comparison.enum";
-import OrderEnum from "../models/enum/Order.enum";
-import { server } from "../services/axios";
-import mapPlanetsResponse from "../utils/mapRawPlanetsResponse";
-import { useFilter } from "./useFilter";
-import { usePagination } from "./usePagination";
-import { useSort } from "./useSort";
+import ComparisonEnum from '../models/enum/Comparison.enum';
+import OrderEnum from '../models/enum/Order.enum';
+import { server } from '../services/axios';
+import mapPlanetsResponse from '../utils/mapRawPlanetsResponse';
+import { useFilter } from './useFilter';
+import { usePagination } from './usePagination';
+import { useSort } from './useSort';
 
-import type ServerResponse from "../models/ServerResponse";
-import type Planet from "../models/Planet";
-import type RawPlanet from "../models/RawPlanet";
-import type { AxiosResponse } from "axios";
+import type ServerResponse from '../models/ServerResponse';
+import type Planet from '../models/Planet';
+import type RawPlanet from '../models/RawPlanet';
+import type { AxiosResponse } from 'axios';
 
 /**
  * Função auxiliar resposável por extrair o `data`
@@ -25,31 +25,49 @@ const extractDataReponse = ({
   data,
 }: AxiosResponse<ServerResponse<RawPlanet[]>>) => data;
 
+type PlanetsStore = {
+  planets: Planet[] | null;
+  filteredPlanets: Planet[] | null;
+  count: number;
+  setPlanets: (planets: Planet[]) => void;
+  setFilteredPlanets: (filteredPlanets: Planet[] | null) => void;
+  setCount: (count: number) => void;
+};
+
 /**
- * Hook e Context Provider responsáveis por prover os dados retornados
- * pela API referentes aos Planetas de Star Wars.
+ * Zustand store for managing planets state.
  */
-const [PlanetsProvider, usePlanets] = constate(() => {
+const usePlanetsStore = create<PlanetsStore>((set) => ({
+  planets: null as Planet[] | null,
+  filteredPlanets: null as Planet[] | null,
+  count: 0,
+  setPlanets: (planets: Planet[]) => set({ planets }),
+  setFilteredPlanets: (filteredPlanets: Planet[] | null) =>
+    set({ filteredPlanets }),
+  setCount: (count: number) => set({ count }),
+}));
+
+const usePlanets = () => {
   const { pagination } = usePagination();
   const { filter } = useFilter();
-
-  const [filteredPlanets, setFilteredPlanets] = useState<Planet[] | null>(null);
-
-  const [planets, setPlanets] = useState<Planet[] | null>(null);
-
   const { sort: sorts } = useSort();
 
-  const [count, setCount] = useState(0);
+  const {
+    planets,
+    filteredPlanets,
+    count,
+    setPlanets,
+    setFilteredPlanets,
+    setCount,
+  } = usePlanetsStore();
 
   const setCountItemsNumber = useCallback(
     (count: number) => (results: Planet[]) => {
       setCount(count);
-
       setPlanets(results);
-
       return results;
     },
-    []
+    [setCount, setPlanets]
   );
 
   const sortPlanets = useCallback(
@@ -78,7 +96,7 @@ const [PlanetsProvider, usePlanets] = constate(() => {
     (items: Planet[]) => {
       if (filter.byName) {
         const filtered = items.filter(({ name }) =>
-          name.match(new RegExp(`${filter.byName.name}`, "i"))
+          name.match(new RegExp(`${filter.byName.name}`, 'i'))
         );
 
         return filtered;
@@ -100,16 +118,16 @@ const [PlanetsProvider, usePlanets] = constate(() => {
               (item) => item[column] === value
             ),
             [ComparisonEnum.GREATER_THAN]: appliedFilters.filter(
-              (item) => (item[column] ?? 0) > value
+              (item) => (Number(item[column]) ?? 0) > value
             ),
             [ComparisonEnum.LOWER_THAN]: appliedFilters.filter(
-              (item) => (item[column] ?? 0) < value
+              (item) => (Number(item[column]) ?? 0) < value
             ),
           }[comparison];
 
           if (!appliedFilter) {
             throw new Error(
-              "Provided value does not exists in `ComparisonEnum`"
+              'Provided value does not exists in `ComparisonEnum`'
             );
           }
 
@@ -124,13 +142,13 @@ const [PlanetsProvider, usePlanets] = constate(() => {
     [filter]
   );
 
-  const clearFilteredItems = () => () => setFilteredPlanets(null);
+  const clearFilteredItems = () => setFilteredPlanets(null);
 
   useEffect(() => {
     const params = pagination.current > 0 ? { page: pagination.current } : null;
 
     server
-      .get<ServerResponse<RawPlanet[]>>("/planets/", {
+      .get<ServerResponse<RawPlanet[]>>('/planets/', {
         params,
       })
       .then(extractDataReponse)
@@ -167,8 +185,6 @@ const [PlanetsProvider, usePlanets] = constate(() => {
   ]);
 
   return { planets: filteredPlanets, count };
-});
+};
 
 export { usePlanets };
-
-export default PlanetsProvider;
