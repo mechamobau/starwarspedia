@@ -28,7 +28,6 @@ const PaginationButtonGroup = ({
     () => Array.from({ length: pagination.viewsCount ?? 0 }, (_, i) => i + 1),
     [pagination]
   );
-  console.log({ items, pagination });
 
   const handlePaginationChange = useCallback(
     (index: number) => () => onPaginationChange?.(index),
