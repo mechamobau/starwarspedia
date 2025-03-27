@@ -7,10 +7,10 @@ import { number, object, string } from 'yup';
 import operationsLabels from '../../constants/operationsLabels';
 import ComparisonEnum from '../../models/enum/Comparison.enum';
 
-import type { NumericPlanetValues } from '../../models/Planet';
+import type { FilterValues } from '../../models/Item';
 
 type NumericColumnLabels = {
-  [key in keyof NumericPlanetValues]: string;
+  [key in keyof FilterValues]: string;
 };
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
 };
 
 type Values = {
-  column: keyof NumericPlanetValues;
+  column: keyof FilterValues;
   comparison: ComparisonEnum;
   value: number;
 };
@@ -33,7 +33,7 @@ const initialValues: Values = {
 const schema = object({
   column: string().required(),
   comparison: string().required(),
-  value: number().min(0).required(),
+  value: string().required(),
 });
 
 const FilterForm = ({ columnLabels, onSubmit }: Props) => (
@@ -95,7 +95,7 @@ const FilterForm = ({ columnLabels, onSubmit }: Props) => (
           </FormControl.Feedback>
         </div>
         <FormControl
-          type="number"
+          type="text"
           key="value-control"
           autoFocus
           className="mx-3 my-2 w-auto"
@@ -111,7 +111,11 @@ const FilterForm = ({ columnLabels, onSubmit }: Props) => (
         </FormControl.Feedback>
 
         <div className="px-3 py-2">
-          <Button disabled={!dirty || !isValid} type="submit" className="w-100">
+          <Button
+            disabled={!dirty || (!isValid && !values?.column)}
+            type="submit"
+            className="w-100"
+          >
             Incluir filtro
           </Button>
         </div>

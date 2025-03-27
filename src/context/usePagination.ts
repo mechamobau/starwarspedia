@@ -19,6 +19,7 @@ type PaginationState = {
   pagination: Pagination;
   setCountItems: (countItems: number) => void;
   setCurrentItem: (value: number) => void;
+  resetPagination: () => void;
 };
 
 const usePagination = create<PaginationState>((set) => ({
@@ -112,6 +113,17 @@ const usePagination = create<PaginationState>((set) => ({
           previous,
         },
       };
+    }),
+
+  resetPagination: () =>
+    set({
+      pagination: {
+        current: 1,
+        previous: null,
+        next: null,
+        totalItemsCount: 0,
+        viewsCount: 0,
+      },
     }),
 }));
 

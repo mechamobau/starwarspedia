@@ -7,10 +7,10 @@ import orderLabels from '../../constants/orderLabels';
 import { initialValues } from '../../context/useSort';
 import OrderEnum from '../../models/enum/Order.enum';
 
-import type Planet from '../../models/Planet';
+import type Item from '../../models/Item';
 
 type PlanetLabels = {
-  [key in keyof Planet]: string;
+  [key in keyof Item]: string;
 };
 
 type Props = {

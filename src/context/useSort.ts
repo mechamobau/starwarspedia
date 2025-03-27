@@ -1,13 +1,13 @@
 import OrderEnum from '../models/enum/Order.enum';
 
-import type Planet from '../models/Planet';
+import type Item from '../models/Item';
 import { create } from 'zustand';
 
 /**
  * Tipo que define a coluna a ser ordena e em qual ordem.
  */
 export type Sort = {
-  column: keyof Planet;
+  column: keyof Item;
   order: OrderEnum;
 };
 
