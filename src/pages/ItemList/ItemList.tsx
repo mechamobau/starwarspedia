@@ -1,20 +1,19 @@
-import React, { useCallback, useEffect } from 'react';
-import { Button, Dropdown } from 'react-bootstrap';
-import FormControl from 'react-bootstrap/FormControl';
+import { useEffect, useLayoutEffect } from 'react';
+import { Button, Container, Dropdown } from 'react-bootstrap';
 import styled, { createGlobalStyle } from 'styled-components';
 
 import FilterToggle from '../../components/dropdown/FilterToggle';
 import FilterDropdown from '../../components/dropdown/FilterDropdown';
 import SortDropdown from '../../components/dropdown/SortDropdown';
-import PublicLayout from '../../components/global/PublicLayout';
 import PaginationButtonGroup from '../../components/table/PaginationButtonGroup';
 import Table from '../../components/table/Table';
-import columnLabels from '../../constants/columnsLabels';
 import operationsLabels from '../../constants/operationsLabels';
 import { useFilter } from '../../context/useFilter';
 import { usePagination } from '../../context/usePagination';
-import { usePlanets } from '../../context/usePlanets';
-import { useSort } from '../../context/useSort';
+import { useItemList as useItemList } from '../../context/useItemList';
+import { Navigate, useParams } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { entitiesList } from '../../constants/entitiesList';
 
 const APP_BACKGROUND_IMAGE = process.env.PUBLIC_URL + '/background.jpg';
 
@@ -76,7 +75,7 @@ const DropdownWrapper = styled.div`
   margin: 10px 0;
 
   @media (min-width: 768px) {
-    justify-content: flex-end;
+    justify-content: flex-start;
 
     .dropdown {
       margin: 0 5px;
@@ -97,41 +96,51 @@ const Wrapper = styled.div`
   }
 `;
 
-export const Planets = () => {
-  const { planets, count } = usePlanets();
-
-  const { setSort } = useSort();
+export const ItemList = () => {
+  const { entityName } = useParams<{
+    entityName: string;
+  }>();
+  const { items: planets, count, clearState } = useItemList(entityName!);
 
   const { pagination, next, previous, setCountItems, setCurrentItem } =
     usePagination();
 
-  const { removeFilterByNumericValues, filter, setFilterByName } = useFilter();
+  const { removeFilterByNumericValues, filter } = useFilter();
+
+  useLayoutEffect(() => {
+    return () => {
+      clearState();
+    };
+  }, [entityName]);
 
   useEffect(() => {
     setCountItems(count);
   }, [count, setCountItems]);
 
-  const handleFilterByNameChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) =>
-      setFilterByName(event.target.value),
-    [setFilterByName]
-  );
+  const { t, i18n } = useTranslation();
+
+  if (!entityName) {
+    return <Navigate to="/planets" />;
+  }
+
+  const columnLabels = planets?.length
+    ? Object.keys(planets[0]).reduce((acc, item) => {
+        acc[item] = t(`${entityName}:${item}`);
+        return acc;
+      }, {} as { [key: string]: string })
+    : {};
+
+  if (!entitiesList.includes(entityName as 'planets' | 'people')) {
+    return <Navigate to="/404" />;
+  }
 
   return (
     <>
       <GlobalStyle />
-      <PublicLayout>
-        <Title className="text-warning">starwarspedia</Title>
+      <Container>
+        <Title className="text-warning">{t(`${entityName!}:title`)}</Title>
 
         <ControlsWrapper>
-          <FormControlWrapper>
-            <FormControl
-              value={filter.byName.name}
-              onChange={handleFilterByNameChange}
-              placeholder="Filtrar por nome"
-            ></FormControl>
-          </FormControlWrapper>
-
           <DropdownWrapper>
             <Dropdown>
               <Dropdown.Toggle
@@ -144,9 +153,8 @@ export const Planets = () => {
 
               <Dropdown.Menu
                 columnLabels={columnLabels}
-                align="right"
+                align="end"
                 as={SortDropdown}
-                onSubmit={setSort}
               ></Dropdown.Menu>
             </Dropdown>
 
@@ -160,14 +168,8 @@ export const Planets = () => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu
-                columnLabels={{
-                  diameter: columnLabels.diameter,
-                  orbital_period: columnLabels.orbital_period,
-                  population: columnLabels.population,
-                  rotation_period: columnLabels.rotation_period,
-                  surface_water: columnLabels.surface_water,
-                }}
-                align="right"
+                columnLabels={columnLabels}
+                align="end"
                 as={FilterDropdown}
               >
                 {filter.byNumericValues?.length ? (
@@ -185,7 +187,11 @@ export const Planets = () => {
                           &times;
                         </Button>
                         <p style={{ display: 'flex' }}>
-                          {`${columnLabels[item.column]} ${operationsLabels[
+                          {`${
+                            columnLabels[
+                              item.column as keyof typeof columnLabels
+                            ]
+                          } ${operationsLabels[
                             item.comparison
                           ].toLowerCase()} ${item.value}`}
                         </p>
@@ -203,13 +209,7 @@ export const Planets = () => {
         </ControlsWrapper>
 
         {planets?.length ? (
-          <Table
-            columnLabels={columnLabels}
-            data={planets.map(({ residents, films, ...item }) => ({
-              ...item,
-              films: films.length,
-            }))}
-          />
+          <Table columnLabels={columnLabels} data={planets} />
         ) : null}
         <PaginationWrapper>
           <PaginationButtonGroup
@@ -219,7 +219,7 @@ export const Planets = () => {
             onPaginationChange={setCurrentItem}
           />
         </PaginationWrapper>
-      </PublicLayout>
+      </Container>
     </>
   );
 };

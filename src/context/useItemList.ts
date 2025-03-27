@@ -12,7 +12,7 @@ import { usePagination } from './usePagination';
 import { useSort } from './useSort';
 
 import type ServerResponse from '../models/ServerResponse';
-import type Planet from '../models/Planet';
+import type Item from '../models/Item';
 import type RawPlanet from '../models/RawPlanet';
 import type { AxiosResponse } from 'axios';
 
@@ -21,57 +21,65 @@ import type { AxiosResponse } from 'axios';
  * de dentro da response
  * @param response - Resposta retornada pelo servidor
  */
-const extractDataReponse = ({
-  data,
-}: AxiosResponse<ServerResponse<RawPlanet[]>>) => data;
+const extractDataReponse = ({ data }: AxiosResponse<ServerResponse<Item[]>>) =>
+  data;
 
-type PlanetsStore = {
-  planets: Planet[] | null;
-  filteredPlanets: Planet[] | null;
+type ItemListStore = {
+  items: Item[] | null;
+  filteredItems: Item[] | null;
   count: number;
-  setPlanets: (planets: Planet[]) => void;
-  setFilteredPlanets: (filteredPlanets: Planet[] | null) => void;
+  setItems: (planets: Item[]) => void;
+  setFilteredItems: (filteredItems: Item[] | null) => void;
   setCount: (count: number) => void;
+  resetState: () => void;
 };
 
 /**
  * Zustand store for managing planets state.
  */
-const usePlanetsStore = create<PlanetsStore>((set) => ({
-  planets: null as Planet[] | null,
-  filteredPlanets: null as Planet[] | null,
+const useItemListStore = create<ItemListStore>((set) => ({
+  items: null as Item[] | null,
+  filteredItems: null as Item[] | null,
   count: 0,
-  setPlanets: (planets: Planet[]) => set({ planets }),
-  setFilteredPlanets: (filteredPlanets: Planet[] | null) =>
-    set({ filteredPlanets }),
+  setItems: (items: Item[]) => set({ items }),
+  setFilteredItems: (filteredItems: Item[] | null) => set({ filteredItems }),
   setCount: (count: number) => set({ count }),
+  resetState: () =>
+    set({
+      items: null,
+      filteredItems: null,
+      count: 0,
+    }),
 }));
 
-const usePlanets = () => {
-  const { pagination } = usePagination();
-  const { filter } = useFilter();
+const useItemList = (key: string) => {
+  const { pagination, resetPagination } = usePagination();
+  const { filter, resetFilter } = useFilter();
   const { sort: sorts } = useSort();
 
   const {
-    planets,
-    filteredPlanets,
+    items,
+    filteredItems,
     count,
-    setPlanets,
-    setFilteredPlanets,
+    setItems,
+    setFilteredItems,
     setCount,
-  } = usePlanetsStore();
+    resetState,
+  } = useItemListStore();
+
+  const clearState = pipe(resetState, resetPagination, resetFilter);
 
   const setCountItemsNumber = useCallback(
-    (count: number) => (results: Planet[]) => {
+    (count: number) => (results: Item[]) => {
       setCount(count);
-      setPlanets(results);
+      setItems(results);
       return results;
     },
-    [setCount, setPlanets]
+    [setCount, setItems]
   );
 
   const sortPlanets = useCallback(
-    (planets: Planet[]) => {
+    (planets: Item[]) => {
       if (sorts === null) return planets;
 
       return planets.sort((a, b) => {
@@ -92,30 +100,15 @@ const usePlanets = () => {
     [sorts]
   );
 
-  const filterByName = useCallback(
-    (items: Planet[]) => {
-      if (filter.byName) {
-        const filtered = items.filter(({ name }) =>
-          name.match(new RegExp(`${filter.byName.name}`, 'i'))
-        );
-
-        return filtered;
-      }
-
-      return items;
-    },
-    [filter]
-  );
-
   const filterByNumericValues = useCallback(
-    (items: Planet[]) => {
+    (items: Item[]) => {
       if (filter.byNumericValues.length) {
-        let appliedFilters: Planet[] = items;
+        let appliedFilters: Item[] = items;
 
         filter.byNumericValues.forEach(({ column, comparison, value }) => {
           const appliedFilter = {
             [ComparisonEnum.EQUALS]: appliedFilters.filter(
-              (item) => item[column] === value
+              (item) => String(item[column]) === String(value)
             ),
             [ComparisonEnum.GREATER_THAN]: appliedFilters.filter(
               (item) => (Number(item[column]) ?? 0) > value
@@ -142,49 +135,34 @@ const usePlanets = () => {
     [filter]
   );
 
-  const clearFilteredItems = () => setFilteredPlanets(null);
+  const clearFilteredItems = () => setFilteredItems(null);
 
   useEffect(() => {
     const params = pagination.current > 0 ? { page: pagination.current } : null;
 
     server
-      .get<ServerResponse<RawPlanet[]>>('/planets/', {
+      .get<ServerResponse<Item[]>>(`/${key}/`, {
         params,
       })
       .then(extractDataReponse)
-      .then(({ count, results }) =>
-        pipe(mapPlanetsResponse, setCountItemsNumber(count))(results)
-      )
-      .then(filterByName)
+      .then(({ count, results }) => setCountItemsNumber(count)(results))
       .then(filterByNumericValues)
       .then(sortPlanets)
-      .then(setFilteredPlanets)
+      .then(setFilteredItems)
       .catch(clearFilteredItems);
 
     // A regra do ESLint pede para que o "filter" seja declarado como deps,
     // ela está desativada nesta linha para que não
     // seja feito um novo request caso o filtro seja alterado.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pagination]);
+  }, [pagination, key]);
 
   useEffect(() => {
-    if (planets)
-      pipe(
-        filterByName,
-        filterByNumericValues,
-        sortPlanets,
-        setFilteredPlanets
-      )(planets);
-  }, [
-    planets,
-    filter,
-    sorts,
-    filterByName,
-    filterByNumericValues,
-    sortPlanets,
-  ]);
+    if (items)
+      pipe(filterByNumericValues, sortPlanets, setFilteredItems)(items);
+  }, [items, filter, sorts, filterByNumericValues, sortPlanets]);
 
-  return { planets: filteredPlanets, count };
+  return { items: filteredItems, count, clearState };
 };
 
-export { usePlanets };
+export { useItemList };

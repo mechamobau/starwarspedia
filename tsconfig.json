@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2022",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -16,7 +16,7 @@
     "noImplicitAny": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "importsNotUsedAsValues": "preserve",
+    "verbatimModuleSyntax": false,
     "noEmit": true,
     "jsx": "react-jsx"
   },

@@ -1,12 +1,12 @@
 import ComparisonEnum from './enum/Comparison.enum';
 
-import type Planet from './Planet';
+import type Item from './Item';
 
 /**
  * Tipo dos valores de filtro para dados numéricos
  */
 export type NumericValueFilter = {
-  column: keyof Planet;
+  column: keyof Item;
   comparison: ComparisonEnum;
   value: number;
 };
@@ -16,12 +16,9 @@ export type NumericValueFilter = {
  */
 export type FilterList = {
   filter: {
-    byName: {
-      name: string;
-    };
     byNumericValues: NumericValueFilter[];
   };
-  setFilterByName: (name: string) => void;
   setFilterByNumericValues: (value: NumericValueFilter) => void;
   removeFilterByNumericValues: (value: NumericValueFilter['column']) => void;
+  resetFilter: () => void;
 };

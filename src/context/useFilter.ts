@@ -3,27 +3,15 @@ import { create } from 'zustand';
 
 const initialValue: FilterList = {
   filter: {
-    byName: {
-      name: '',
-    },
     byNumericValues: [],
   },
   removeFilterByNumericValues: () => {},
-  setFilterByName: () => {},
   setFilterByNumericValues: () => {},
+  resetFilter: () => {},
 };
 
 export const useFilter = create<FilterList>((set) => ({
   filter: initialValue.filter,
-  setFilterByName: (name: string) =>
-    set((state) => ({
-      filter: {
-        ...state.filter,
-        byName: {
-          name,
-        },
-      },
-    })),
   setFilterByNumericValues: (value: NumericValueFilter) =>
     set((state) => ({
       filter: {
@@ -45,4 +33,5 @@ export const useFilter = create<FilterList>((set) => ({
         ),
       },
     })),
+  resetFilter: () => set({ filter: initialValue.filter }),
 }));
