@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 import { useTranslation } from 'react-i18next';
 import { entitiesList } from '../../constants/entitiesList';
 import { NavDropdown } from 'react-bootstrap';
+import { SupportedLanguages } from '../../i18n';
 
 const Title = styled.h1`
   font-size: 1.9em;
@@ -22,7 +23,11 @@ const Title = styled.h1`
 `;
 
 export function ItemListLayout() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const changeLanguage = (lng: SupportedLanguages) => {
+    i18n.changeLanguage(lng);
+    localStorage.setItem('i18nextLng', lng);
+  };
   return (
     <div>
       <Navbar bg="dark" data-bs-theme="dark" expand="lg">
@@ -38,7 +43,7 @@ export function ItemListLayout() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav>
-              <NavDropdown title="Entidades" id="basic-nav-dropdown">
+              <NavDropdown title={t('core:entities')} id="basic-nav-dropdown">
                 {entitiesList.map((entity) => {
                   return (
                     <Link to={`/${entity}`}>
@@ -55,6 +60,19 @@ export function ItemListLayout() {
               <Link to={`/favorites`}>
                 <Nav.Link href={`/favorites`}>{t(`favorites:title`)}</Nav.Link>
               </Link>
+
+              <NavDropdown
+                title={t('core:change-language')}
+                id="language-switcher"
+              >
+                {(['es', 'pt', 'en'] as SupportedLanguages[]).map((lang) => {
+                  return (
+                    <NavDropdown.Item onClick={() => changeLanguage(lang)}>
+                      {lang}
+                    </NavDropdown.Item>
+                  );
+                })}
+              </NavDropdown>
             </Nav>
           </Navbar.Collapse>
         </Container>
