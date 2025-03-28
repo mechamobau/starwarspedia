@@ -132,7 +132,11 @@ export const ItemStorageList = () => {
                 <Col sm={4}>
                   <Card className="p-3 bg-dark mb-3">
                     <Card.Title className="text-white">
-                      {'name' in favorite ? favorite.name : ''}
+                      {'name' in favorite
+                        ? favorite.name
+                        : 'title' in favorite
+                        ? favorite.title
+                        : ''}
                     </Card.Title>
                     <Card.Text>
                       <Badge bg={badgeColors?.[resource] ?? 'info'}>
