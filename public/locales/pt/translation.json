@@ -60,5 +60,10 @@
     "surface_water": "Água Superficial",
     "population": "População",
     "diameter": "Diâmetro"
+  },
+  "favorites": {
+    "title": "Favoritos",
+    "cta": "Ir até",
+    "delete": "Remover"
   }
 }

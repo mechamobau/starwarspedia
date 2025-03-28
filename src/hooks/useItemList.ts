@@ -15,6 +15,7 @@ import type ServerResponse from '../models/ServerResponse';
 import type Item from '../models/Item';
 import type RawPlanet from '../models/RawPlanet';
 import type { AxiosResponse } from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
 /**
  * Função auxiliar resposável por extrair o `data`
@@ -66,6 +67,16 @@ const useItemList = (key: string) => {
     setCount,
     resetState,
   } = useItemListStore();
+
+  const params = pagination.current > 0 ? { page: pagination.current } : null;
+
+  const itemListQuery = useQuery({
+    queryKey: ['item-list', pagination.current, key],
+    queryFn: () =>
+      server.get<ServerResponse<Item[]>>(`/${key}/`, {
+        params,
+      }),
+  });
 
   const clearState = pipe(resetState, resetPagination, resetFilter);
 
@@ -138,24 +149,28 @@ const useItemList = (key: string) => {
   const clearFilteredItems = () => setFilteredItems(null);
 
   useEffect(() => {
-    const params = pagination.current > 0 ? { page: pagination.current } : null;
+    if (!itemListQuery.data) return;
 
-    server
-      .get<ServerResponse<Item[]>>(`/${key}/`, {
-        params,
-      })
-      .then(extractDataReponse)
-      .then(({ count, results }) => setCountItemsNumber(count)(results))
-      .then(filterByNumericValues)
-      .then(sortPlanets)
-      .then(setFilteredItems)
-      .catch(clearFilteredItems);
+    const filterItems = pipe(
+      extractDataReponse,
+      ({ count, results }) => setCountItemsNumber(count)(results),
+      filterByNumericValues,
+      sortPlanets,
+      setFilteredItems
+    );
+
+    try {
+      filterItems(itemListQuery.data);
+    } catch (error) {
+      console.log({ error });
+      clearFilteredItems;
+    }
 
     // A regra do ESLint pede para que o "filter" seja declarado como deps,
     // ela está desativada nesta linha para que não
     // seja feito um novo request caso o filtro seja alterado.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pagination, key]);
+  }, [itemListQuery.data, pagination, key]);
 
   useEffect(() => {
     if (items)

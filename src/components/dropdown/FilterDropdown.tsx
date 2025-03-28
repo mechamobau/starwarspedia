@@ -1,6 +1,6 @@
 import React, { ReactNode, useMemo } from 'react';
 
-import { useFilter } from '../../context/useFilter';
+import { useFilter } from '../../hooks/useFilter';
 import FilterForm from '../forms/FilterForm';
 
 import type { FilterValues } from '../../models/Item';
