@@ -52,7 +52,6 @@ const SortForm = ({ columnLabels, disabled = false, onSubmit }: Props) => (
             as="select"
             className="w-100"
             name="order"
-            // placeholder="Ordenação"
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.order}

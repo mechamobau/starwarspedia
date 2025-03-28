@@ -1,4 +1,10 @@
 {
+  "core": {
+    "entities": "Entities",
+    "order-by": "Order by",
+    "filters": "Filters",
+    "change-language": "Change language"
+  },
   "planets": {
     "title": "Planets",
     "name": "Name",
@@ -64,6 +70,7 @@
   "favorites": {
     "title": "Favorites",
     "cta": "Go to",
-    "delete": "Delete"
+    "delete": "Delete",
+    "action": "Favorite"
   }
 }

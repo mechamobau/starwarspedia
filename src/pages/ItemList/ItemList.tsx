@@ -14,6 +14,7 @@ import { useItemList as useItemList } from '../../hooks/useItemList';
 import { Navigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { entitiesList } from '../../constants/entitiesList';
+import { Sort, useSort } from '../../hooks/useSort';
 
 const APP_BACKGROUND_IMAGE = process.env.PUBLIC_URL + '/background.jpg';
 
@@ -107,6 +108,8 @@ export const ItemList = () => {
 
   const { removeFilterByNumericValues, filter } = useFilter();
 
+  const { setSort } = useSort();
+
   useLayoutEffect(() => {
     return () => {
       clearState();
@@ -148,13 +151,17 @@ export const ItemList = () => {
                 className="text-warning"
                 id="dropdown-custom-components"
               >
-                Ordenação
+                {t('core:order-by')}
               </Dropdown.Toggle>
 
               <Dropdown.Menu
                 columnLabels={columnLabels}
                 align="end"
                 as={SortDropdown}
+                // @ts-ignore
+                onSubmit={(event: Sort) => {
+                  setSort(event);
+                }}
               ></Dropdown.Menu>
             </Dropdown>
 
@@ -164,7 +171,7 @@ export const ItemList = () => {
                 className="text-warning"
                 id="dropdown-custom-components"
               >
-                Filtros
+                {t('core:filters')}
               </Dropdown.Toggle>
 
               <Dropdown.Menu

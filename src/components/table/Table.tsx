@@ -2,6 +2,7 @@ import useLocalStorage from '@rehooks/local-storage';
 import React, { useMemo } from 'react';
 import { Form } from 'react-bootstrap';
 import BSTable from 'react-bootstrap/Table';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 
 type Props<T extends Record<string, string>> = {
@@ -15,6 +16,7 @@ function Table<T extends Record<string, string>>({
   data,
   columnLabels,
 }: Props<T>) {
+  const { t } = useTranslation();
   const columns = useMemo(() => {
     if (!data.length) return [];
 
@@ -28,7 +30,7 @@ function Table<T extends Record<string, string>>({
     <BSTable className="table-dark" responsive>
       <thead data-testid="table-header">
         <tr data-testid="table-header-row">
-          <th key="favorite">Favoritar</th>
+          <th key="favorite">{t('favorites:action')}</th>
           {columns.map((column) => (
             <th key={column + Math.random()}>
               {columnLabels?.[column] ?? column}
