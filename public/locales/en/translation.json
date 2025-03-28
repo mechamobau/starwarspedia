@@ -60,5 +60,10 @@
     "surface_water": "Surface Water",
     "population": "Population",
     "diameter": "Diameter"
+  },
+  "favorites": {
+    "title": "Favorites",
+    "cta": "Go to",
+    "delete": "Delete"
   }
 }

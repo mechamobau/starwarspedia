@@ -5,6 +5,7 @@ import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
 import { useTranslation } from 'react-i18next';
 import { entitiesList } from '../../constants/entitiesList';
+import { NavDropdown } from 'react-bootstrap';
 
 const Title = styled.h1`
   font-size: 1.9em;
@@ -37,15 +38,23 @@ export function ItemListLayout() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav>
-              {entitiesList.map((entity) => {
-                return (
-                  <Link to={`/${entity}`}>
-                    <Nav.Link href={`/${entity}`}>
-                      {t(`${entity}:title`)}
-                    </Nav.Link>
-                  </Link>
-                );
-              })}
+              <NavDropdown title="Entidades" id="basic-nav-dropdown">
+                {entitiesList.map((entity) => {
+                  return (
+                    <Link to={`/${entity}`}>
+                      <NavDropdown.Item href={`/${entity}`}>
+                        <Nav.Link href={`/${entity}`}>
+                          {t(`${entity}:title`)}
+                        </Nav.Link>
+                      </NavDropdown.Item>
+                    </Link>
+                  );
+                })}
+              </NavDropdown>
+
+              <Link to={`/favorites`}>
+                <Nav.Link href={`/favorites`}>{t(`favorites:title`)}</Nav.Link>
+              </Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

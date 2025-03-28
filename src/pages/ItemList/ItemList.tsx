@@ -8,9 +8,9 @@ import SortDropdown from '../../components/dropdown/SortDropdown';
 import PaginationButtonGroup from '../../components/table/PaginationButtonGroup';
 import Table from '../../components/table/Table';
 import operationsLabels from '../../constants/operationsLabels';
-import { useFilter } from '../../context/useFilter';
-import { usePagination } from '../../context/usePagination';
-import { useItemList as useItemList } from '../../context/useItemList';
+import { useFilter } from '../../hooks/useFilter';
+import { usePagination } from '../../hooks/usePagination';
+import { useItemList as useItemList } from '../../hooks/useItemList';
 import { Navigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { entitiesList } from '../../constants/entitiesList';
@@ -100,7 +100,7 @@ export const ItemList = () => {
   const { entityName } = useParams<{
     entityName: string;
   }>();
-  const { items: planets, count, clearState } = useItemList(entityName!);
+  const { items, count, clearState } = useItemList(entityName!);
 
   const { pagination, next, previous, setCountItems, setCurrentItem } =
     usePagination();
@@ -117,14 +117,14 @@ export const ItemList = () => {
     setCountItems(count);
   }, [count, setCountItems]);
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   if (!entityName) {
     return <Navigate to="/planets" />;
   }
 
-  const columnLabels = planets?.length
-    ? Object.keys(planets[0]).reduce((acc, item) => {
+  const columnLabels = items?.length
+    ? Object.keys(items[0]).reduce((acc, item) => {
         acc[item] = t(`${entityName}:${item}`);
         return acc;
       }, {} as { [key: string]: string })
@@ -208,8 +208,8 @@ export const ItemList = () => {
           </DropdownWrapper>
         </ControlsWrapper>
 
-        {planets?.length ? (
-          <Table columnLabels={columnLabels} data={planets} />
+        {items?.length ? (
+          <Table columnLabels={columnLabels} data={items} />
         ) : null}
         <PaginationWrapper>
           <PaginationButtonGroup

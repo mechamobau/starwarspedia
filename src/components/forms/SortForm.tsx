@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import FormControl from 'react-bootstrap/FormControl';
 
 import orderLabels from '../../constants/orderLabels';
-import { initialValues } from '../../context/useSort';
+import { initialValues } from '../../hooks/useSort';
 import OrderEnum from '../../models/enum/Order.enum';
 
 import type Item from '../../models/Item';

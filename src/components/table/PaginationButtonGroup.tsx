@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
-import { Pagination } from '../../context/usePagination';
+import { Pagination } from '../../hooks/usePagination';
 
 /**
  * Props do componente `PaginationButtonGroup`
