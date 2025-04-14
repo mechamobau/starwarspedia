@@ -3,7 +3,8 @@
     "entities": "Entidades",
     "order-by": "Ordenação",
     "filters": "Filtros",
-    "change-language": "Alterar idioma"
+    "change-language": "Alterar idioma",
+    "not-found": "Não encontrada"
   },
   "planets": {
     "title": "Planetas",

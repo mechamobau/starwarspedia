@@ -45,57 +45,6 @@ const Title = styled.h1`
   }
 `;
 
-const PaginationWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-  margin-bottom: 50px;
-`;
-
-const FormControlWrapper = styled.div`
-  width: 100%;
-`;
-
-const ControlsWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column-reverse;
-  align-items: center;
-  margin-bottom: 30px;
-
-  @media (min-width: 768px) {
-    flex-direction: row;
-  }
-`;
-
-const DropdownWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin: 10px 0;
-
-  @media (min-width: 768px) {
-    justify-content: flex-start;
-
-    .dropdown {
-      margin: 0 5px;
-    }
-  }
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-
-  button {
-    font-weight: bold;
-  }
-
-  p {
-    margin: 0;
-  }
-`;
-
 export const ItemStorageList = () => {
   const { clearState } = useItemList('favorites');
   const [favorites, setFavorites] =

@@ -3,6 +3,7 @@ import { ItemList } from './pages/ItemList/ItemList';
 import { ItemListLayout } from './components/layouts/ItemListLayout';
 import { GetById } from './pages/GetItemById/GetItemById';
 import { ItemStorageList } from './pages/ItemStorageList/ItemStorageList';
+import { NotFound } from './pages/NotFound/NotFound';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="favorites" element={<ItemStorageList />}></Route>
         <Route path="/:entityName" element={<ItemList />}></Route>
         <Route path="/:entityName/:entityId" element={<GetById />}></Route>
+        <Route path="/404" element={<NotFound />}></Route>
       </Route>
     </Routes>
   );
